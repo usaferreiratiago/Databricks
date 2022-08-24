@@ -1,54 +1,88 @@
 databricks-logoProject_1(Python)
 
 
- Import Notebook
+ # Import Libraries 
+2
  
-# Import Libraries 
- 
+3
 from pyspark.sql import SparkSession
+4
 from pyspark.sql.functions import *
+5
 from pyspark.sql.types import *
+Command took 0.07 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:03:08 PM on Databricks
+Cmd 2
+1
 import numpy as np
+2
 import pandas as pd
+3
 import seaborn as sns
+4
 import matplotlib.pyplot as plt
-
+5
 #import findspark as fd
-dbutils.fs.ls("/FileStore/tables/input/")
- 
-Out[5]: [FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1660999948000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1660999874000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1660999874000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1660999875000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_JobCandidate.csv', name='HumanResources_JobCandidate.csv', size=64287, modificationTime=1660999875000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Shift.csv', name='HumanResources_Shift.csv', size=249, modificationTime=1660999876000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Address.csv', name='Person_Address.csv', size=3082183, modificationTime=1660999893000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_AddressType.csv', name='Person_AddressType.csv', size=478, modificationTime=1660999877000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntity.csv', name='Person_BusinessEntity.csv', size=1401772, modificationTime=1660999885000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntityAddress.csv', name='Person_BusinessEntityAddress.csv', size=1478939, modificationTime=1660999893000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntityContact.csv', name='Person_BusinessEntityContact.csv', size=67492, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_ContactType.csv', name='Person_ContactType.csv', size=1002, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_CountryRegion.csv', name='Person_CountryRegion.csv', size=9352, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_EPhoneNumberType.csv', name='Person_EPhoneNumberType.csv', size=136, modificationTime=1660999895000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_EmailAddress.csv', name='Person_EmailAddress.csv', size=2027800, modificationTime=1660999978000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Password.csv', name='Person_Password.csv', size=2426705, modificationTime=1660999982000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Person.csv', name='Person_Person.csv', size=13646947, modificationTime=1661000048000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_PersonPhone.csv', name='Person_PersonPhone.csv', size=973138, modificationTime=1660999911000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_StateProvince.csv', name='Person_StateProvince.csv', size=16212, modificationTime=1660999912000),
- FileInfo(path='dbfs:/FileStore/tables/input/Production_BillOfMaterials.csv', name='Production_BillOfMaterials.csv', size=217415, modificationTime=1660999913000),
- FileInfo(path='dbfs:/FileStore/tables/input/Production_Culture.csv', name='Production_Culture.csv', size=391, modificationTime=1660999991000)]
+Command took 0.03 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:03:12 PM on Databricks
+Cmd 3
+1
+dbutils.fs.ls("/FileStore/tables/Bronze/")
+2
+​
+Out[236]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_JobCandidate.csv', name='HumanResources_JobCandidate.csv', size=64287, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Shift.csv', name='HumanResources_Shift.csv', size=249, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Address.csv', name='Person_Address.csv', size=3082183, modificationTime=1661338437000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_AddressType.csv', name='Person_AddressType.csv', size=478, modificationTime=1661338422000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntity.csv', name='Person_BusinessEntity.csv', size=1401772, modificationTime=1661338430000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityAddress.csv', name='Person_BusinessEntityAddress.csv', size=1478939, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityContact.csv', name='Person_BusinessEntityContact.csv', size=67492, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_ContactType.csv', name='Person_ContactType.csv', size=1002, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_CountryRegion.csv', name='Person_CountryRegion.csv', size=9352, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EPhoneNumberType.csv', name='Person_EPhoneNumberType.csv', size=136, modificationTime=1661338440000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EmailAddress.csv', name='Person_EmailAddress.csv', size=2027800, modificationTime=1661338450000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Password.csv', name='Person_Password.csv', size=2426705, modificationTime=1661338453000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Person.csv', name='Person_Person.csv', size=13646947, modificationTime=1661338522000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_PersonPhone.csv', name='Person_PersonPhone.csv', size=973138, modificationTime=1661338459000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_StateProvince.csv', name='Person_StateProvince.csv', size=16212, modificationTime=1661338460000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_BillOfMaterials.csv', name='Production_BillOfMaterials.csv', size=217415, modificationTime=1661338463000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_Culture.csv', name='Production_Culture.csv', size=391, modificationTime=1661338464000)]
+Command took 0.17 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:03:24 PM on Databricks
+Cmd 4
+1
 # Create SparkSession
+2
  
+3
 spark = (
+4
     SparkSession.builder
+5
     .master('local')
+6
     .appName('Project_01')
+7
     .getOrCreate()
+8
 )
-df = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/input/HumanResources_Department.csv")
+Command took 0.10 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:03:31 PM on Databricks
+Cmd 5
+df = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Department.csv")
 #display(df)
 #print(df.count())
 df.show()
+1
+df = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Department.csv")
+2
+#display(df)
+3
+#print(df.count())
+4
+df.show()
+(2) Spark Jobs
+df:pyspark.sql.dataframe.DataFrame = [DepartmentID: string, Name: string ... 2 more fields]
 +------------+--------------------+--------------------+--------------------+
 |DepartmentID|                Name|           GroupName|        ModifiedDate|
 +------------+--------------------+--------------------+--------------------+
@@ -70,7 +104,11 @@ df.show()
 |          16|           Executive|Executive General...|2008-04-30 00:00:...|
 +------------+--------------------+--------------------+--------------------+
 
+Command took 0.92 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:03:41 PM on Databricks
+Cmd 6
+1
 # Check Schema
+2
 df.printSchema()
 root
  |-- DepartmentID: string (nullable = true)
@@ -78,27 +116,49 @@ root
  |-- GroupName: string (nullable = true)
  |-- ModifiedDate: string (nullable = true)
 
+Command took 0.07 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:04 PM on Databricks
+Cmd 7
+1
 # Checking Datas null -- Pandas has limitations #Don't use - Only try
+2
  
+3
 df.toPandas().isna().sum()
-Out[13]: DepartmentID    0
+(1) Spark Jobs
+Out[240]: DepartmentID    0
 Name            0
 GroupName       0
 ModifiedDate    0
 dtype: int64
+Command took 0.39 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:10 PM on Databricks
+Cmd 8
+1
 # Searching for Nulls
+2
  
+3
 for column in df.columns:
+4
     print(column,df.filter(df[column].isNull()).count())
+(8) Spark Jobs
 DepartmentID 0
 Name 0
 GroupName 0
 ModifiedDate 0
+Command took 1.21 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:13 PM on Databricks
+Cmd 9
+1
 # Rename Columns
+2
 # Always you need to put ## [ df = ]## to Save
+3
  
+4
 df = df.withColumnRenamed('Modified Date','ModifiedDate')
+5
 df.show(truncate = False)
+(1) Spark Jobs
+df:pyspark.sql.dataframe.DataFrame = [DepartmentID: string, Name: string ... 2 more fields]
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -120,13 +180,24 @@ df.show(truncate = False)
 |16          |Executive                 |Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.23 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:15 PM on Databricks
+Cmd 10
+1
 # Check all Columns
+2
  
+3
 df.columns
-Out[16]: ['DepartmentID', 'Name', 'GroupName', 'ModifiedDate']
+Out[243]: ['DepartmentID', 'Name', 'GroupName', 'ModifiedDate']
+Command took 0.03 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:19 PM on Databricks
+Cmd 11
+1
 # Select Columns
+2
  
+3
 df.select(col('GroupName'),col('Name')).show(truncate = False)
+(1) Spark Jobs
 +------------------------------------+--------------------------+
 |GroupName                           |Name                      |
 +------------------------------------+--------------------------+
@@ -148,10 +219,17 @@ df.select(col('GroupName'),col('Name')).show(truncate = False)
 |Executive General and Administration|Executive                 |
 +------------------------------------+--------------------------+
 
+Command took 0.31 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:22 PM on Databricks
+Cmd 12
+1
 # Create Alias
+2
 # Always you need to put ## [ df = ]## to Save
+3
  
+4
 df.select(col('Name').alias('Names')).show(truncate = False)
+(1) Spark Jobs
 +--------------------------+
 |Names                     |
 +--------------------------+
@@ -173,10 +251,17 @@ df.select(col('Name').alias('Names')).show(truncate = False)
 |Executive                 |
 +--------------------------+
 
+Command took 0.31 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:25 PM on Databricks
+Cmd 13
+1
 # using Split - only to know about it, if see on another code
+2
 # Always you need to put ## [ df = ]## to Save
+3
  
+4
 df.select('DepartmentID Name GroupName ModifiedDate'.split()).show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -198,9 +283,15 @@ df.select('DepartmentID Name GroupName ModifiedDate'.split()).show(truncate = Fa
 |16          |Executive                 |Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.21 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:29 PM on Databricks
+Cmd 14
+1
 # Showing Columns as you want to see 
+2
  
+3
 df.select('Name','GroupName').show(truncate = False)
+(1) Spark Jobs
 +--------------------------+------------------------------------+
 |Name                      |GroupName                           |
 +--------------------------+------------------------------------+
@@ -222,18 +313,30 @@ df.select('Name','GroupName').show(truncate = False)
 |Executive                 |Executive General and Administration|
 +--------------------------+------------------------------------+
 
+Command took 0.23 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:33 PM on Databricks
+Cmd 15
+1
 # Filtring df  --Showing only the specific column and specific filtern and putting distinct function to not duplicate information
+2
  
+3
 df.select(col('GroupName')).filter(col('GroupName') == "Inventory Management").distinct().show(truncate = False)
+(2) Spark Jobs
 +--------------------+
 |GroupName           |
 +--------------------+
 |Inventory Management|
 +--------------------+
 
+Command took 0.58 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:36 PM on Databricks
+Cmd 16
+1
 #Showing all df
+2
  
+3
 df.show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -255,36 +358,60 @@ df.show(truncate = False)
 |16          |Executive                 |Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.26 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:38 PM on Databricks
+Cmd 17
+1
 # Filtring df with more conditions and specific columns (AND / &)
+2
  
+3
 df.select('Name','ModifiedDate').filter((col('Name') == "Finance")).show(truncate = False)
+(1) Spark Jobs
 +-------+-----------------------+
 |Name   |ModifiedDate           |
 +-------+-----------------------+
 |Finance|2008-04-30 00:00:00.000|
 +-------+-----------------------+
 
+Command took 0.30 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:42 PM on Databricks
+Cmd 18
+1
 # Filtring df with specific columns and more conditions  (AND / &)
+2
  
+3
 df.select('DepartmentID','Name').filter((col('Name') == "Finance") & (col('DepartmentID') == 10)).show(truncate = False) 
+(1) Spark Jobs
 +------------+-------+
 |DepartmentID|Name   |
 +------------+-------+
 |10          |Finance|
 +------------+-------+
 
+Command took 0.43 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:45 PM on Databricks
+Cmd 19
+1
 # Filtring df with specific columns and more conditions  (AND / &)
+2
  
+3
 df.select('DepartmentId','Name').filter((col('DepartmentID') == 2)).show(truncate = False)
+(1) Spark Jobs
 +------------+-----------+
 |DepartmentId|Name       |
 +------------+-----------+
 |2           |Tool Design|
 +------------+-----------+
 
+Command took 0.33 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:47 PM on Databricks
+Cmd 20
+1
 # Filtring df with specific columns and more conditions  (AND / &)
+2
  
+3
 df.select('DepartmentId','Name').filter((col('DepartmentID') != 12)).show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+
 |DepartmentId|Name                      |
 +------------+--------------------------+
@@ -305,10 +432,17 @@ df.select('DepartmentId','Name').filter((col('DepartmentID') != 12)).show(trunca
 |16          |Executive                 |
 +------------+--------------------------+
 
+Command took 0.38 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:53 PM on Databricks
+Cmd 21
+1
 # Filtring df with specific columns and more conditions  (AND / &)
+2
 ## df.filter('Name = "Finance"').filter(col('DepartmentId') == 1).show()
+3
  
+4
 df.select('DepartmentId','Name').filter((col('DepartmentID') >= 3)).show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+
 |DepartmentId|Name                      |
 +------------+--------------------------+
@@ -328,9 +462,15 @@ df.select('DepartmentId','Name').filter((col('DepartmentID') >= 3)).show(truncat
 |16          |Executive                 |
 +------------+--------------------------+
 
+Command took 0.35 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:56 PM on Databricks
+Cmd 22
+1
 # Filtring df with specific columns and more conditions  (AND / &)
+2
  
+3
 df.select('DepartmentId','Name').filter((col('DepartmentID') <= 16)).show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+
 |DepartmentId|Name                      |
 +------------+--------------------------+
@@ -352,18 +492,30 @@ df.select('DepartmentId','Name').filter((col('DepartmentID') <= 16)).show(trunca
 |16          |Executive                 |
 +------------+--------------------------+
 
+Command took 0.27 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:04:59 PM on Databricks
+Cmd 23
+1
 # Filtring df with more conditions (OR / |)
+2
  
+3
 df.filter('DepartmentID = "1"').show(truncate = False)
+(1) Spark Jobs
 +------------+-----------+------------------------+-----------------------+
 |DepartmentID|Name       |GroupName               |ModifiedDate           |
 +------------+-----------+------------------------+-----------------------+
 |1           |Engineering|Research and Development|2008-04-30 00:00:00.000|
 +------------+-----------+------------------------+-----------------------+
 
+Command took 0.38 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:03 PM on Databricks
+Cmd 24
+1
 # Filtring df with more conditions (OR / |)
+2
  
+3
 df.filter((col('Name') == 'Finance') | (col('Name') == 'Sales') | (col('DepartmentID') == 12)).show(truncate = False)
+(1) Spark Jobs
 +------------+----------------+------------------------------------+-----------------------+
 |DepartmentID|Name            |GroupName                           |ModifiedDate           |
 +------------+----------------+------------------------------------+-----------------------+
@@ -372,9 +524,15 @@ df.filter((col('Name') == 'Finance') | (col('Name') == 'Sales') | (col('Departme
 |12          |Document Control|Quality Assurance                   |2008-04-30 00:00:00.000|
 +------------+----------------+------------------------------------+-----------------------+
 
+Command took 0.32 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:06 PM on Databricks
+Cmd 25
+1
 # # Filtring df with more conditions (OR / |)
+2
  
+3
 df.filter(col('GroupName') == 'Quality Assurance').show(truncate = False)
+(1) Spark Jobs
 +------------+-----------------+-----------------+-----------------------+
 |DepartmentID|Name             |GroupName        |ModifiedDate           |
 +------------+-----------------+-----------------+-----------------------+
@@ -382,9 +540,15 @@ df.filter(col('GroupName') == 'Quality Assurance').show(truncate = False)
 |13          |Quality Assurance|Quality Assurance|2008-04-30 00:00:00.000|
 +------------+-----------------+-----------------+-----------------------+
 
+Command took 0.26 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:11 PM on Databricks
+Cmd 26
+1
 # # Filtring df combining & and | # And e OR #
+2
  
+3
 df.filter((col('GroupName') == "Quality Assurance")  | (col('Name') == "Sales") | (col('DepartmentID') == 10)).show(truncate = False)
+(1) Spark Jobs
 +------------+-----------------+------------------------------------+-----------------------+
 |DepartmentID|Name             |GroupName                           |ModifiedDate           |
 +------------+-----------------+------------------------------------+-----------------------+
@@ -394,9 +558,15 @@ df.filter((col('GroupName') == "Quality Assurance")  | (col('Name') == "Sales") 
 |13          |Quality Assurance|Quality Assurance                   |2008-04-30 00:00:00.000|
 +------------+-----------------+------------------------------------+-----------------------+
 
+Command took 0.34 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:14 PM on Databricks
+Cmd 27
+1
 # Concatenate Columns without space
+2
  
+3
 df.withColumn("DepartmentID + GroupName", concat('DepartmentID','GroupName')).show()
+(1) Spark Jobs
 +------------+--------------------+--------------------+--------------------+------------------------+
 |DepartmentID|                Name|           GroupName|        ModifiedDate|DepartmentID + GroupName|
 +------------+--------------------+--------------------+--------------------+------------------------+
@@ -418,9 +588,15 @@ df.withColumn("DepartmentID + GroupName", concat('DepartmentID','GroupName')).sh
 |          16|           Executive|Executive General...|2008-04-30 00:00:...|    16Executive Gener...|
 +------------+--------------------+--------------------+--------------------+------------------------+
 
+Command took 0.26 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:18 PM on Databricks
+Cmd 28
+1
 # Concatenate Columns with space
+2
  
+3
 df.withColumn("DepartmentID + GroupName", concat_ws(' ', 'DepartmentID','GroupName')).show()
+(1) Spark Jobs
 +------------+--------------------+--------------------+--------------------+------------------------+
 |DepartmentID|                Name|           GroupName|        ModifiedDate|DepartmentID + GroupName|
 +------------+--------------------+--------------------+--------------------+------------------------+
@@ -442,9 +618,15 @@ df.withColumn("DepartmentID + GroupName", concat_ws(' ', 'DepartmentID','GroupNa
 |          16|           Executive|Executive General...|2008-04-30 00:00:...|    16 Executive Gene...|
 +------------+--------------------+--------------------+--------------------+------------------------+
 
+Command took 0.29 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:20 PM on Databricks
+Cmd 29
+1
 # Alter type of Column
+2
  
+3
 df.show(truncate = False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -466,8 +648,13 @@ df.show(truncate = False)
 |16          |Executive                 |Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.19 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:23 PM on Databricks
+Cmd 30
+1
 # Alter type of Column
+2
  
+3
 df.printSchema()
 root
  |-- DepartmentID: string (nullable = true)
@@ -475,11 +662,19 @@ root
  |-- GroupName: string (nullable = true)
  |-- ModifiedDate: string (nullable = true)
 
+Command took 0.04 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:26 PM on Databricks
+Cmd 31
+1
 # Alter type of Metada of the Column
+2
  
+3
 #df.withColumn('ModifiedDate', col('ModifiedDate').cast(IntegerType())).show(truncate=False)
+4
  
+5
 df.show()
+(1) Spark Jobs
 +------------+--------------------+--------------------+--------------------+
 |DepartmentID|                Name|           GroupName|        ModifiedDate|
 +------------+--------------------+--------------------+--------------------+
@@ -501,10 +696,17 @@ df.show()
 |          16|           Executive|Executive General...|2008-04-30 00:00:...|
 +------------+--------------------+--------------------+--------------------+
 
+Command took 0.28 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:31 PM on Databricks
+Cmd 32
+1
 # Alter type of Column
+2
 # Didn't change yet because we didn't put variable "" df = df.withColumn('ModifiedDate', col('ModifiedDate').cast(IntegerType())).show(truncate=False)"  bfore the execution of code,
+3
 # only when we put this everything will change
+4
  
+5
 df.printSchema()
 root
  |-- DepartmentID: string (nullable = true)
@@ -512,10 +714,17 @@ root
  |-- GroupName: string (nullable = true)
  |-- ModifiedDate: string (nullable = true)
 
+Command took 0.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:34 PM on Databricks
+Cmd 33
+1
 #The below example returns the difference between two dates using datediff().
+2
  
+3
 df.select(col('ModifiedDate'),
+4
          datediff(current_timestamp(), col('ModifiedDate')).alias('difference between two dates')).show(truncate=False)
+(1) Spark Jobs
 +-----------------------+----------------------------+
 |ModifiedDate           |difference between two dates|
 +-----------------------+----------------------------+
@@ -537,37 +746,53 @@ df.select(col('ModifiedDate'),
 |2008-04-30 00:00:00.000|5229                        |
 +-----------------------+----------------------------+
 
+Command took 0.42 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:36 PM on Databricks
+Cmd 34
+1
 #The below example returns the months between two dates 
+2
  
+3
 df.select(col("ModifiedDate"), 
+4
     months_between(current_timestamp(),col("ModifiedDate")).alias("months_between")  
+5
   ).show()
+6
  
+7
 #round(col("score")
+(1) Spark Jobs
 +--------------------+--------------+
 |        ModifiedDate|months_between|
 +--------------------+--------------+
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
-|2008-04-30 00:00:...|  171.81781623|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
+|2008-04-30 00:00:...|  171.82136313|
 +--------------------+--------------+
 
+Command took 0.44 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:39 PM on Databricks
+Cmd 35
+1
 #Using round numbers ('Arredontar numeros')
+2
  
+3
 df.select("*",round(col("DepartmentID")).alias("Teste")).show(truncate=False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+-----+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |Teste|
 +------------+--------------------------+------------------------------------+-----------------------+-----+
@@ -589,18 +814,33 @@ df.select("*",round(col("DepartmentID")).alias("Teste")).show(truncate=False)
 |16          |Executive                 |Executive General and Administration|2008-04-30 00:00:00.000|16.0 |
 +------------+--------------------------+------------------------------------+-----------------------+-----+
 
+Command took 0.39 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:05:46 PM on Databricks
+Cmd 36
+1
 ## test modifying dates##
+2
  
+3
 #(df_date
+4
 #.withColumn("to_date", f.to_date("input_date"))
+5
  
+6
 df.withColumn("year",year("ModifiedDate")).show(2)
+7
 df.withColumn("quarter", quarter("ModifiedDate")).show(2)
+8
 df.withColumn("month",month("ModifiedDate")).show(2)
+9
 df.withColumn("week",weekofyear("ModifiedDate")).show(2)
+10
 df.withColumn("dayofyear",dayofyear("ModifiedDate")).show(2)
+11
 df.withColumn("dayofmonth ",dayofmonth("ModifiedDate")).show(2)
+12
 df.withColumn("dayofweek" , dayofweek("ModifiedDate")).show(2)
+(7) Spark Jobs
 +------------+-----------+--------------------+--------------------+----+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|year|
 +------------+-----------+--------------------+--------------------+----+
@@ -657,14 +897,25 @@ only showing top 2 rows
 +------------+-----------+--------------------+--------------------+---------+
 only showing top 2 rows
 
+Command took 2.41 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:03 PM on Databricks
+Cmd 37
+1
 # Extract Hour, Minutes and Seconds
+2
  
+3
  
+4
 #(df_date
+5
 #.withColumn("to_timestamp",f.to_timestamp("input_date"))
+6
 df.withColumn("hour", hour("ModifiedDate")).show(2)
+7
 df.withColumn("minute",minute("ModifiedDate")).show(2)
+8
 df.withColumn("second",second("ModifiedDate")).show(2)
+(3) Spark Jobs
 +------------+-----------+--------------------+--------------------+----+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|hour|
 +------------+-----------+--------------------+--------------------+----+
@@ -689,11 +940,19 @@ only showing top 2 rows
 +------------+-----------+--------------------+--------------------+------+
 only showing top 2 rows
 
+Command took 1.10 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:05 PM on Databricks
+Cmd 38
+1
 #Days and Month in Words
+2
  
+3
 df.withColumn("dayofweek" ,dayofweek("ModifiedDate")).show(2)
+4
 df.withColumn("dayinwords",date_format("ModifiedDate" , "EEEE")).show(2)
+5
 ##df.withColumn("monthinwords", date_format("ModifiedDate" , "LLLL")).show(2)
+(2) Spark Jobs
 +------------+-----------+--------------------+--------------------+---------+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|dayofweek|
 +------------+-----------+--------------------+--------------------+---------+
@@ -710,13 +969,23 @@ only showing top 2 rows
 +------------+-----------+--------------------+--------------------+----------+
 only showing top 2 rows
 
+Command took 0.45 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:08 PM on Databricks
+Cmd 39
+1
 #Hadling Dates
+2
  
+3
 df.withColumn("cur_date",current_date()).show(2)
+4
 df.withColumn("Days",datediff(current_date(),"ModifiedDate" )).show(2) 
+5
 df.withColumn("dateadd" ,date_add("ModifiedDate",5)).show(2) 
+6
 df.withColumn("datesub" ,date_sub("ModifiedDate",5)).show(2) 
+7
 df.withColumn("datetrnc",date_trunc('mm' , "ModifiedDate")).show(2) 
+(5) Spark Jobs
 +------------+-----------+--------------------+--------------------+----------+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|  cur_date|
 +------------+-----------+--------------------+--------------------+----------+
@@ -757,9 +1026,15 @@ only showing top 2 rows
 +------------+-----------+--------------------+--------------------+-------------------+
 only showing top 2 rows
 
+Command took 1.55 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:10 PM on Databricks
+Cmd 40
+1
 #Using Distinct #
+2
  
+3
 df.select(col('GroupName')).distinct().show(truncate=False)
+(2) Spark Jobs
 +------------------------------------+
 |GroupName                           |
 +------------------------------------+
@@ -771,33 +1046,67 @@ df.select(col('GroupName')).distinct().show(truncate=False)
 |Inventory Management                |
 +------------------------------------+
 
+Command took 0.53 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:13 PM on Databricks
+Cmd 41
+1
 # Using Collect - show all the rows#
+2
  
+3
 df.select(col('GroupName')).distinct().collect()
-Out[47]: [Row(GroupName='Executive General and Administration'),
+(2) Spark Jobs
+Out[274]: [Row(GroupName='Executive General and Administration'),
  Row(GroupName='Sales and Marketing'),
  Row(GroupName='Research and Development'),
  Row(GroupName='Quality Assurance'),
  Row(GroupName='Manufacturing'),
  Row(GroupName='Inventory Management')]
+Command took 0.46 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:16 PM on Databricks
+Cmd 42
+1
 list = df.select(col('GroupName')).collect()
+(1) Spark Jobs
+Command took 0.39 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:23 PM on Databricks
+Cmd 43
+1
 type(list[0][0])
-Out[49]: str
+Out[276]: str
+Command took 0.10 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:25 PM on Databricks
+Cmd 44
+1
 list[5][0]
-Out[50]: 'Research and Development'
+Out[277]: 'Research and Development'
+Command took 0.12 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:27 PM on Databricks
+Cmd 45
+1
 list[0][0]
-Out[51]: 'Research and Development'
+Out[278]: 'Research and Development'
+Command took 0.10 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:28 PM on Databricks
+Cmd 46
+1
 # Generating a list GroupName = []
+2
  
+3
 for GroupName in list:
+4
     GroupName.asDict(GroupName[0])
+5
 GroupName
-Out[52]: Row(GroupName='Executive General and Administration')
+Out[279]: Row(GroupName='Executive General and Administration')
+Command took 0.05 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:33 PM on Databricks
+Cmd 47
+1
 ## Working with When () / Otherwise()##
+2
  
+3
 ##df.withColumn('Correct', when(col('GroupName') == "Manufacturing", lit("OK"))).otherwise("NOT")
+4
  
+5
 df.withColumn("Correct", when(col("GroupName") == "Manufacturing" , lit("OK")).otherwise("")).distinct().show(truncate=False)
+(2) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+-------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |Correct|
 +------------+--------------------------+------------------------------------+-----------------------+-------+
@@ -819,14 +1128,25 @@ df.withColumn("Correct", when(col("GroupName") == "Manufacturing" , lit("OK")).o
 |5           |Purchasing                |Inventory Management                |2008-04-30 00:00:00.000|       |
 +------------+--------------------------+------------------------------------+-----------------------+-------+
 
+Command took 0.58 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:35 PM on Databricks
+Cmd 48
+1
 ## Working with When () / Otherwise()##
+2
  
+3
 ##df.withColumn('Correct', when(col('GroupName') == "Manufacturing", lit("OK"))).otherwise("NOT")
+4
  
+5
 df.withColumn("Correct", when(col("GroupName").isin("GroupName"),'Correct')
+6
              
+7
  
+8
 .otherwise("Ok")).distinct().show(truncate=False)
+(2) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+-------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |Correct|
 +------------+--------------------------+------------------------------------+-----------------------+-------+
@@ -848,9 +1168,15 @@ df.withColumn("Correct", when(col("GroupName").isin("GroupName"),'Correct')
 |9           |Human Resources           |Executive General and Administration|2008-04-30 00:00:00.000|Ok     |
 +------------+--------------------------+------------------------------------+-----------------------+-------+
 
+Command took 0.38 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:36 PM on Databricks
+Cmd 49
+1
 ## Working with OrderBy desc
+2
  
+3
 df.orderBy(col("GroupName").desc()).show(truncate=False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -872,9 +1198,15 @@ df.orderBy(col("GroupName").desc()).show(truncate=False)
 |14          |Facilities and Maintenance|Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.25 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:39 PM on Databricks
+Cmd 50
+1
 ## Working with OrderBy asc
+2
  
+3
 df.orderBy(col("GroupName").asc()).show(truncate=False)
+(1) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -896,9 +1228,15 @@ df.orderBy(col("GroupName").asc()).show(truncate=False)
 |4           |Marketing                 |Sales and Marketing                 |2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.44 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:43 PM on Databricks
+Cmd 51
+1
 ## Working with OrderBy, Distinct asc
+2
  
+3
 df.orderBy(col("GroupName").asc()).distinct().show(truncate=False)
+(2) Spark Jobs
 +------------+--------------------------+------------------------------------+-----------------------+
 |DepartmentID|Name                      |GroupName                           |ModifiedDate           |
 +------------+--------------------------+------------------------------------+-----------------------+
@@ -920,9 +1258,15 @@ df.orderBy(col("GroupName").asc()).distinct().show(truncate=False)
 |11          |Information Services      |Executive General and Administration|2008-04-30 00:00:00.000|
 +------------+--------------------------+------------------------------------+-----------------------+
 
+Command took 0.57 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:46 PM on Databricks
+Cmd 52
+1
 ## Working with GroupBy, Count, Distinct and asc
+2
  
+3
 df.groupBy("GroupName").count().distinct().show(truncate=False)
+(2) Spark Jobs
 +------------------------------------+-----+
 |GroupName                           |count|
 +------------------------------------+-----+
@@ -934,36 +1278,31 @@ df.groupBy("GroupName").count().distinct().show(truncate=False)
 |Inventory Management                |2    |
 +------------------------------------+-----+
 
-df2 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/input/HumanResources_Employee.csv")
+Command took 0.62 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:06:48 PM on Databricks
+Cmd 53
+3
+1
+df2 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Employee.csv")
+2
 #display(df)
+3
 #print(df.count())
-df2.show(truncate=False)
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-|BusinessEntityID|NationalIDNumber|LoginID                 |OrganizationNode|OrganizationLevel|JobTitle                         |BirthDate |MaritalStatus|Gender|HireDate  |SalariedFlag|VacationHours|SickLeaveHours|CurrentFlag|rowguid                             |ModifiedDate           |
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-|1               |295847284       |adventure-works\ken0    |NULL            |NULL             |Chief Executive Officer          |1969-01-29|S            |M     |2009-01-14|1           |99           |69            |1          |F01251E5-96A3-448D-981E-0F99D789110D|2014-06-30 00:00:00.000|
-|2               |245797967       |adventure-works\terri0  |0x58            |1                |Vice President of Engineering    |1971-08-01|S            |F     |2008-01-31|1           |1            |20            |1          |45E8F437-670D-4409-93CB-F9424A40D6EE|2014-06-30 00:00:00.000|
-|3               |509647174       |adventure-works\roberto0|0x5AC0          |2                |Engineering Manager              |1974-11-12|M            |M     |2007-11-11|1           |2            |21            |1          |9BBBFB2C-EFBB-4217-9AB7-F97689328841|2014-06-30 00:00:00.000|
-|4               |112457891       |adventure-works\rob0    |0x5AD6          |3                |Senior Tool Designer             |1974-12-23|S            |M     |2007-12-05|0           |48           |80            |1          |59747955-87B8-443F-8ED4-F8AD3AFDF3A9|2014-06-30 00:00:00.000|
-|5               |695256908       |adventure-works\gail0   |0x5ADA          |3                |Design Engineer                  |1952-09-27|M            |F     |2008-01-06|1           |5            |22            |1          |EC84AE09-F9B8-4A15-B4A9-6CCBAB919B08|2014-06-30 00:00:00.000|
-|6               |998320692       |adventure-works\jossef0 |0x5ADE          |3                |Design Engineer                  |1959-03-11|M            |M     |2008-01-24|1           |6            |23            |1          |E39056F1-9CD5-478D-8945-14ACA7FBDCDD|2014-06-30 00:00:00.000|
-|7               |134969118       |adventure-works\dylan0  |0x5AE1          |3                |Research and Development Manager |1987-02-24|M            |M     |2009-02-08|1           |61           |50            |1          |4F46DECA-EF01-41FD-9829-0ADAB368E431|2014-06-30 00:00:00.000|
-|8               |811994146       |adventure-works\diane1  |0x5AE158        |4                |Research and Development Engineer|1986-06-05|S            |F     |2008-12-29|1           |62           |51            |1          |31112635-663B-4018-B4A2-A685C0BF48A4|2014-06-30 00:00:00.000|
-|9               |658797903       |adventure-works\gigi0   |0x5AE168        |4                |Research and Development Engineer|1979-01-21|M            |F     |2009-01-16|1           |63           |51            |1          |50B6CDC6-7570-47EF-9570-48A64B5F2ECF|2014-06-30 00:00:00.000|
-|10              |879342154       |adventure-works\michael6|0x5AE178        |4                |Research and Development Manager |1984-11-30|M            |M     |2009-05-03|1           |16           |64            |1          |EAA43680-5571-40CB-AB1A-3BF68F04459E|2014-06-30 00:00:00.000|
-|11              |974026903       |adventure-works\ovidiu0 |0x5AE3          |3                |Senior Tool Designer             |1978-01-17|S            |M     |2010-12-05|0           |7            |23            |1          |F68C7C19-FAC1-438C-9BB7-AC33FCC341C3|2014-06-30 00:00:00.000|
-|12              |480168528       |adventure-works\thierry0|0x5AE358        |4                |Tool Designer                    |1959-07-29|M            |M     |2007-12-11|0           |9            |24            |1          |1D955171-E773-4FAD-8382-40FD898D5D4D|2014-06-30 00:00:00.000|
-|13              |486228782       |adventure-works\janice0 |0x5AE368        |4                |Tool Designer                    |1989-05-28|M            |F     |2010-12-23|0           |8            |24            |1          |954B91B6-5AA7-48C2-8685-6E11C6E5C49A|2014-06-30 00:00:00.000|
-|14              |42487730        |adventure-works\michael8|0x5AE5          |3                |Senior Design Engineer           |1979-06-16|S            |M     |2010-12-30|1           |3            |21            |1          |46286CA4-46DD-4DDB-9128-85B67E98D1A9|2014-06-30 00:00:00.000|
-|15              |56920285        |adventure-works\sharon0 |0x5AE7          |3                |Design Engineer                  |1961-05-02|M            |F     |2011-01-18|1           |4            |22            |1          |54F2FDC0-87C4-4065-A7A8-9AC8EA624235|2014-06-30 00:00:00.000|
-|16              |24756624        |adventure-works\david0  |0x68            |1                |Marketing Manager                |1975-03-19|S            |M     |2007-12-20|1           |40           |40            |1          |E87029AA-2CBA-4C03-B948-D83AF0313E28|2014-06-30 00:00:00.000|
-|17              |253022876       |adventure-works\kevin0  |0x6AC0          |2                |Marketing Assistant              |1987-05-03|S            |M     |2007-01-26|0           |42           |41            |1          |1B480240-95C0-410F-A717-EB29943C8886|2014-06-30 00:00:00.000|
-|18              |222969461       |adventure-works\john5   |0x6B40          |2                |Marketing Specialist             |1978-03-06|S            |M     |2011-02-07|0           |48           |44            |1          |64730415-1F58-4E5B-8FA8-5E4DAEBA53B4|2014-06-30 00:00:00.000|
-|19              |52541318        |adventure-works\mary2   |0x6BC0          |2                |Marketing Assistant              |1978-01-29|S            |F     |2011-02-14|0           |43           |41            |1          |1F6DA901-C7F7-48A8-8EEF-D81868D72B52|2014-06-30 00:00:00.000|
-|20              |323403273       |adventure-works\wanida0 |0x6C20          |2                |Marketing Assistant              |1975-03-17|M            |F     |2011-01-07|0           |41           |40            |1          |43CCA446-DA1C-454C-8530-873AD2923E1B|2014-06-30 00:00:00.000|
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-only showing top 20 rows
+4
+df2.show(3)
+(2) Spark Jobs
+df2:pyspark.sql.dataframe.DataFrame = [BusinessEntityID: string, NationalIDNumber: string ... 14 more fields]
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+|BusinessEntityID|NationalIDNumber|             LoginID|OrganizationNode|OrganizationLevel|            JobTitle| BirthDate|MaritalStatus|Gender|  HireDate|SalariedFlag|VacationHours|SickLeaveHours|CurrentFlag|             rowguid|        ModifiedDate|
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+|               1|       295847284|adventure-works\ken0|            NULL|             NULL|Chief Executive O...|1969-01-29|            S|     M|2009-01-14|           1|           99|            69|          1|F01251E5-96A3-448...|2014-06-30 00:00:...|
+|               2|       245797967|adventure-works\t...|            0x58|                1|Vice President of...|1971-08-01|            S|     F|2008-01-31|           1|            1|            20|          1|45E8F437-670D-440...|2014-06-30 00:00:...|
+|               3|       509647174|adventure-works\r...|          0x5AC0|                2| Engineering Manager|1974-11-12|            M|     M|2007-11-11|           1|            2|            21|          1|9BBBFB2C-EFBB-421...|2014-06-30 00:00:...|
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+only showing top 3 rows
 
+Command took 0.81 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:36 PM on Databricks
+Cmd 54
+1
 df2.printSchema()
 root
  |-- BusinessEntityID: string (nullable = true)
@@ -983,10 +1322,17 @@ root
  |-- rowguid: string (nullable = true)
  |-- ModifiedDate: string (nullable = true)
 
+Command took 0.08 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:41 PM on Databricks
+Cmd 55
+1
 # Searching for Nulls
+2
  
+3
 for column in df2.columns:
+4
     print(column,df2.filter(df2[column].isNull()).count())
+(32) Spark Jobs
 BusinessEntityID 0
 NationalIDNumber 0
 LoginID 0
@@ -1003,10 +1349,15 @@ SickLeaveHours 0
 CurrentFlag 0
 rowguid 0
 ModifiedDate 0
+Command took 4.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:44 PM on Databricks
+Cmd 56
+1
 # Check all Columns
+2
  
+3
 df2.columns
-Out[62]: ['BusinessEntityID',
+Out[291]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -1022,10 +1373,17 @@ Out[62]: ['BusinessEntityID',
  'CurrentFlag',
  'rowguid',
  'ModifiedDate']
+Command took 0.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:46 PM on Databricks
+Cmd 57
+1
 # using Split - only to know about it, if see on another code
+2
 # Always you need to put ## [ df = ]## to Save
+3
  
+4
 df2.select('BusinessEntityID LoginID OrganizationNode OrganizationLevel JobTitle '.split()).show(truncate=False)
+(1) Spark Jobs
 +----------------+------------------------+----------------+-----------------+---------------------------------+
 |BusinessEntityID|LoginID                 |OrganizationNode|OrganizationLevel|JobTitle                         |
 +----------------+------------------------+----------------+-----------------+---------------------------------+
@@ -1052,14 +1410,26 @@ df2.select('BusinessEntityID LoginID OrganizationNode OrganizationLevel JobTitle
 +----------------+------------------------+----------------+-----------------+---------------------------------+
 only showing top 20 rows
 
+Command took 0.34 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:56 PM on Databricks
+Cmd 58
+1
 #empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
+2
      #.show(truncate=False)
+3
  
+4
  
+5
 #(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner")
+6
  
+7
 dfinner = df.join(df2,df.DepartmentID ==  df2.BusinessEntityID,"leftouter")
+8
 dfinner.show(2)
+(1) Spark Jobs
+dfinner:pyspark.sql.dataframe.DataFrame = [DepartmentID: string, Name: string ... 18 more fields]
 +------------+-----------+--------------------+--------------------+----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|BusinessEntityID|NationalIDNumber|             LoginID|OrganizationNode|OrganizationLevel|            JobTitle| BirthDate|MaritalStatus|Gender|  HireDate|SalariedFlag|VacationHours|SickLeaveHours|CurrentFlag|             rowguid|        ModifiedDate|
 +------------+-----------+--------------------+--------------------+----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
@@ -1068,15 +1438,28 @@ dfinner.show(2)
 +------------+-----------+--------------------+--------------------+----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
 only showing top 2 rows
 
+Command took 0.64 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:07:59 PM on Databricks
+Cmd 59
+1
 #empDF.join(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner") \
+2
      #.show(truncate=False)
+3
  
+4
  
+5
 #(deptDF,empDF.emp_dept_id ==  deptDF.dept_id,"inner")
+6
  
+7
 dfHR = df.join(df2,df.DepartmentID ==  df2.BusinessEntityID,"leftouter")\
+8
 .select(col("JobTitle"))
+9
 dfHR.show(truncate=False)
+(1) Spark Jobs
+dfHR:pyspark.sql.dataframe.DataFrame = [JobTitle: string]
 +---------------------------------+
 |JobTitle                         |
 +---------------------------------+
@@ -1098,13 +1481,23 @@ dfHR.show(truncate=False)
 |Marketing Manager                |
 +---------------------------------+
 
+Command took 0.59 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:08:16 PM on Databricks
+Cmd 60
+1
 ### Joins Dataframes ###
+2
  
+3
  
+4
 df.join(df2, df.DepartmentID == df2.BusinessEntityID, "inner")\
+5
 .select(df2.BusinessEntityID.alias("Entity"), \
+6
 df.DepartmentID.alias('Department'), \
+7
 df.Name.alias('Name')).show(truncate= False)
+(1) Spark Jobs
 +------+----------+--------------------------+
 |Entity|Department|Name                      |
 +------+----------+--------------------------+
@@ -1126,8 +1519,11 @@ df.Name.alias('Name')).show(truncate= False)
 |16    |16        |Executive                 |
 +------+----------+--------------------------+
 
+Command took 0.44 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:08:20 PM on Databricks
+Cmd 61
+1
 df2.columns
-Out[70]: ['BusinessEntityID',
+Out[296]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -1143,7 +1539,11 @@ Out[70]: ['BusinessEntityID',
  'CurrentFlag',
  'rowguid',
  'ModifiedDate']
+Command took 0.04 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:08:23 PM on Databricks
+Cmd 62
+1
 df2.select(col("LoginID")).show(truncate=False)
+(1) Spark Jobs
 +------------------------+
 |LoginID                 |
 +------------------------+
@@ -1170,51 +1570,71 @@ df2.select(col("LoginID")).show(truncate=False)
 +------------------------+
 only showing top 20 rows
 
-df3 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/input/HumanResources_EmployeeDepartmentHistory.csv")
+Command took 0.25 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:08:25 PM on Databricks
+Cmd 63
+truncate=False
+1
+df3 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv")
+2
 #display(df)
+3
 #print(df.count())
-df3.show()
-+----------------+------------+-------+----------+----------+--------------------+
-|BusinessEntityID|DepartmentID|ShiftID| StartDate|   EndDate|        ModifiedDate|
-+----------------+------------+-------+----------+----------+--------------------+
-|               1|          16|      1|2009-01-14|      NULL|2009-01-13 00:00:...|
-|               2|           1|      1|2008-01-31|      NULL|2008-01-30 00:00:...|
-|               3|           1|      1|2007-11-11|      NULL|2007-11-10 00:00:...|
-|               4|           1|      1|2007-12-05|2010-05-30|2010-05-28 00:00:...|
-|               4|           2|      1|2010-05-31|      NULL|2010-05-30 00:00:...|
-|               5|           1|      1|2008-01-06|      NULL|2008-01-05 00:00:...|
-|               6|           1|      1|2008-01-24|      NULL|2008-01-23 00:00:...|
-|               7|           6|      1|2009-02-08|      NULL|2009-02-07 00:00:...|
-|               8|           6|      1|2008-12-29|      NULL|2008-12-28 00:00:...|
-|               9|           6|      1|2009-01-16|      NULL|2009-01-15 00:00:...|
-|              10|           6|      1|2009-05-03|      NULL|2009-05-02 00:00:...|
-|              11|           2|      1|2010-12-05|      NULL|2010-12-04 00:00:...|
-|              12|           2|      1|2007-12-11|      NULL|2007-12-10 00:00:...|
-|              13|           2|      1|2010-12-23|      NULL|2010-12-22 00:00:...|
-|              14|           1|      1|2010-12-30|      NULL|2010-12-29 00:00:...|
-|              15|           1|      1|2011-01-18|      NULL|2011-01-17 00:00:...|
-|              16|           5|      1|2007-12-20|2009-07-14|2009-07-12 00:00:...|
-|              16|           4|      1|2009-07-15|      NULL|2009-07-14 00:00:...|
-|              17|           4|      1|2007-01-26|      NULL|2007-01-25 00:00:...|
-|              18|           4|      1|2011-02-07|      NULL|2011-02-06 00:00:...|
-+----------------+------------+-------+----------+----------+--------------------+
+4
+df3.show(truncate=False)
+(2) Spark Jobs
+df3:pyspark.sql.dataframe.DataFrame = [BusinessEntityID: string, DepartmentID: string ... 4 more fields]
++----------------+------------+-------+----------+----------+-----------------------+
+|BusinessEntityID|DepartmentID|ShiftID|StartDate |EndDate   |ModifiedDate           |
++----------------+------------+-------+----------+----------+-----------------------+
+|1               |16          |1      |2009-01-14|NULL      |2009-01-13 00:00:00.000|
+|2               |1           |1      |2008-01-31|NULL      |2008-01-30 00:00:00.000|
+|3               |1           |1      |2007-11-11|NULL      |2007-11-10 00:00:00.000|
+|4               |1           |1      |2007-12-05|2010-05-30|2010-05-28 00:00:00.000|
+|4               |2           |1      |2010-05-31|NULL      |2010-05-30 00:00:00.000|
+|5               |1           |1      |2008-01-06|NULL      |2008-01-05 00:00:00.000|
+|6               |1           |1      |2008-01-24|NULL      |2008-01-23 00:00:00.000|
+|7               |6           |1      |2009-02-08|NULL      |2009-02-07 00:00:00.000|
+|8               |6           |1      |2008-12-29|NULL      |2008-12-28 00:00:00.000|
+|9               |6           |1      |2009-01-16|NULL      |2009-01-15 00:00:00.000|
+|10              |6           |1      |2009-05-03|NULL      |2009-05-02 00:00:00.000|
+|11              |2           |1      |2010-12-05|NULL      |2010-12-04 00:00:00.000|
+|12              |2           |1      |2007-12-11|NULL      |2007-12-10 00:00:00.000|
+|13              |2           |1      |2010-12-23|NULL      |2010-12-22 00:00:00.000|
+|14              |1           |1      |2010-12-30|NULL      |2010-12-29 00:00:00.000|
+|15              |1           |1      |2011-01-18|NULL      |2011-01-17 00:00:00.000|
+|16              |5           |1      |2007-12-20|2009-07-14|2009-07-12 00:00:00.000|
+|16              |4           |1      |2009-07-15|NULL      |2009-07-14 00:00:00.000|
+|17              |4           |1      |2007-01-26|NULL      |2007-01-25 00:00:00.000|
+|18              |4           |1      |2011-02-07|NULL      |2011-02-06 00:00:00.000|
++----------------+------------+-------+----------+----------+-----------------------+
 only showing top 20 rows
 
+Command took 0.79 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:08:50 PM on Databricks
+Cmd 64
+1
 for column in df3.columns:
+2
     print(column,df3.filter(df3[column].isNull()).count())
+(12) Spark Jobs
 BusinessEntityID 0
 DepartmentID 0
 ShiftID 0
 StartDate 0
 EndDate 0
 ModifiedDate 0
+Command took 1.50 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:09:00 PM on Databricks
+Cmd 65
+1
 df3.columns
-Out[74]: ['BusinessEntityID',
+Out[301]: ['BusinessEntityID',
  'DepartmentID',
  'ShiftID',
  'StartDate',
  'EndDate',
  'ModifiedDate']
+Command took 0.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:09:01 PM on Databricks
+Cmd 66
+1
 %fs ls '/'
  
 path
@@ -1225,6 +1645,11 @@ modificationTime
 2
 3
 4
+5
+dbfs:/ /
+/
+0
+0
 dbfs:/FileStore/
 FileStore/
 0
@@ -1241,15 +1666,28 @@ dbfs:/user/
 user/
 0
 0
-Showing all 4 rows.
+Showing all 5 rows.
 
+ 
+
+Command took 1.72 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:09:06 PM on Databricks
+Cmd 67
+1
  # List the DBFS root
+2
     
+3
  %fs ls
+4
     
+5
  # Recursively remove the files under foobar
+6
     
+7
  %fs rm -r dbfs:/foobar
+Cmd 68
+1
  %fs ls
  
 path
@@ -1260,6 +1698,11 @@ modificationTime
 2
 3
 4
+5
+dbfs:/ /
+/
+0
+0
 dbfs:/FileStore/
 FileStore/
 0
@@ -1276,17 +1719,21 @@ dbfs:/user/
 user/
 0
 0
-Showing all 4 rows.
+Showing all 5 rows.
 
-# To Delete Files
  
-%fs rm -r dbfs:/FileStore/tables/input/Put here File to delete.csv
-UsageError: Line magic function `%fs` not found.
-UsageError: Line magic function `%fs` not found.
+
+Command took 0.61 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:10:34 PM on Databricks
+Cmd 69
+1
 # using Split - only to know about it, if see on another code
+2
 # Always you need to put ## [ df = ]## to Save
+3
  
+4
 df2.select('BusinessEntityID LoginID OrganizationNode OrganizationLevel JobTitle '.split()).show(truncate=False)
+(1) Spark Jobs
 +----------------+------------------------+----------------+-----------------+---------------------------------+
 |BusinessEntityID|LoginID                 |OrganizationNode|OrganizationLevel|JobTitle                         |
 +----------------+------------------------+----------------+-----------------+---------------------------------+
@@ -1313,35 +1760,69 @@ df2.select('BusinessEntityID LoginID OrganizationNode OrganizationLevel JobTitle
 +----------------+------------------------+----------------+-----------------+---------------------------------+
 only showing top 20 rows
 
+Command took 0.27 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:11:07 PM on Databricks
+Cmd 70
+1
 # Create TempView
+2
  
+3
 data_test = df2.createOrReplaceTempView("HumanResources_Employee")
+Command took 0.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:11:17 PM on Databricks
+Cmd 71
+1
 # SQL inside Pyspark
+2
  
+3
 data_test = spark.sql("""SELECT
+4
  
+5
  
+6
  SUBSTRING(LoginID, 17, 100) AS Login, 
+7
  SUBSTRING(HireDate, 1, 10) AS HireDate,
+8
  JobTitle,
+9
  SUBSTRING(BirthDate, 1, 10) AS BirthDate,
+10
  CASE
+11
     WHEN MaritalStatus = 'S' THEN 'Single'
+12
     WHEN MaritalStatus = 'M' THEN 'Married'
+13
     ELSE ''
+14
 END AS MaritalStatus,
+15
 CASE
+16
     WHEN Gender = 'M' THEN 'Male'
+17
     WHEN Gender = 'F' THEN 'Female'
+18
     ELSE ''
+19
 END AS Gender
+20
 FROM HumanResources_Employee
+21
  
+22
 where JobTitle in ('Senior Tool Designer','Tool Designer') 
+23
  
+24
  
+25
  
+26
 """).show(truncate=False)
+(1) Spark Jobs
 +--------+----------+--------------------+----------+-------------+------+
 |Login   |HireDate  |JobTitle            |BirthDate |MaritalStatus|Gender|
 +--------+----------+--------------------+----------+-------------+------+
@@ -1351,44 +1832,117 @@ where JobTitle in ('Senior Tool Designer','Tool Designer')
 |janice0 |2010-12-23|Tool Designer       |1989-05-28|Married      |Female|
 +--------+----------+--------------------+----------+-------------+------+
 
+Command took 0.53 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:53:28 PM on Databricks
+Cmd 72
+1
+# Check List Catalogs
+2
+​
+3
 spark.catalog.listCatalogs()
-Out[135]: []
+Out[344]: []
+Command took 0.27 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:54:58 PM on Databricks
+Cmd 73
+1
+# Check List Databases
+2
+​
+3
 spark.catalog.listDatabases()
-Out[136]: [Database(name='default', catalog='spark_catalog', description='Default Hive database', locationUri='dbfs:/user/hive/warehouse')]
-dbutils.fs.ls("/FileStore/tables/input/")
-Out[137]: [FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1660999948000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1660999874000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1660999874000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1660999875000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_JobCandidate.csv', name='HumanResources_JobCandidate.csv', size=64287, modificationTime=1660999875000),
- FileInfo(path='dbfs:/FileStore/tables/input/HumanResources_Shift.csv', name='HumanResources_Shift.csv', size=249, modificationTime=1660999876000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Address.csv', name='Person_Address.csv', size=3082183, modificationTime=1660999893000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_AddressType.csv', name='Person_AddressType.csv', size=478, modificationTime=1660999877000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntity.csv', name='Person_BusinessEntity.csv', size=1401772, modificationTime=1660999885000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntityAddress.csv', name='Person_BusinessEntityAddress.csv', size=1478939, modificationTime=1660999893000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_BusinessEntityContact.csv', name='Person_BusinessEntityContact.csv', size=67492, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_ContactType.csv', name='Person_ContactType.csv', size=1002, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_CountryRegion.csv', name='Person_CountryRegion.csv', size=9352, modificationTime=1660999894000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_EPhoneNumberType.csv', name='Person_EPhoneNumberType.csv', size=136, modificationTime=1660999895000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_EmailAddress.csv', name='Person_EmailAddress.csv', size=2027800, modificationTime=1660999978000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Password.csv', name='Person_Password.csv', size=2426705, modificationTime=1660999982000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_Person.csv', name='Person_Person.csv', size=13646947, modificationTime=1661000048000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_PersonPhone.csv', name='Person_PersonPhone.csv', size=973138, modificationTime=1660999911000),
- FileInfo(path='dbfs:/FileStore/tables/input/Person_StateProvince.csv', name='Person_StateProvince.csv', size=16212, modificationTime=1660999912000),
- FileInfo(path='dbfs:/FileStore/tables/input/Production_BillOfMaterials.csv', name='Production_BillOfMaterials.csv', size=217415, modificationTime=1660999913000),
- FileInfo(path='dbfs:/FileStore/tables/input/Production_Culture.csv', name='Production_Culture.csv', size=391, modificationTime=1660999991000)]
+(2) Spark Jobs
+Out[345]: [Database(name='default', catalog='spark_catalog', description='Default Hive database', locationUri='dbfs:/user/hive/warehouse')]
+Command took 0.26 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:55:28 PM on Databricks
+Cmd 74
+1
+# Check Files inside of Folder
+2
+​
+3
+dbutils.fs.ls("/FileStore/tables/Bronze/")
+Out[346]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_JobCandidate.csv', name='HumanResources_JobCandidate.csv', size=64287, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Shift.csv', name='HumanResources_Shift.csv', size=249, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Address.csv', name='Person_Address.csv', size=3082183, modificationTime=1661338437000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_AddressType.csv', name='Person_AddressType.csv', size=478, modificationTime=1661338422000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntity.csv', name='Person_BusinessEntity.csv', size=1401772, modificationTime=1661338430000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityAddress.csv', name='Person_BusinessEntityAddress.csv', size=1478939, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityContact.csv', name='Person_BusinessEntityContact.csv', size=67492, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_ContactType.csv', name='Person_ContactType.csv', size=1002, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_CountryRegion.csv', name='Person_CountryRegion.csv', size=9352, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EPhoneNumberType.csv', name='Person_EPhoneNumberType.csv', size=136, modificationTime=1661338440000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EmailAddress.csv', name='Person_EmailAddress.csv', size=2027800, modificationTime=1661338450000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Password.csv', name='Person_Password.csv', size=2426705, modificationTime=1661338453000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Person.csv', name='Person_Person.csv', size=13646947, modificationTime=1661338522000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_PersonPhone.csv', name='Person_PersonPhone.csv', size=973138, modificationTime=1661338459000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_StateProvince.csv', name='Person_StateProvince.csv', size=16212, modificationTime=1661338460000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_BillOfMaterials.csv', name='Production_BillOfMaterials.csv', size=217415, modificationTime=1661338463000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_Culture.csv', name='Production_Culture.csv', size=391, modificationTime=1661338464000)]
+Command took 0.25 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:55:36 PM on Databricks
+Cmd 75
+1
+# Check Files inside of Folder
+2
+​
+3
 dbutils.fs.ls("/user/hive/warehouse/")
-Out[138]: [FileInfo(path='dbfs:/user/hive/warehouse/data_test/', name='data_test/', size=0, modificationTime=0)]
+Out[312]: [FileInfo(path='dbfs:/user/hive/warehouse/data_test/', name='data_test/', size=0, modificationTime=0)]
+Command took 0.23 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:13:42 PM on Databricks
+Cmd 76
+1
+# Check Files inside of Folder
+2
+​
+3
 dbutils.fs.ls("/user/")
-Out[139]: [FileInfo(path='dbfs:/user/hive/', name='hive/', size=0, modificationTime=0)]
+Out[313]: [FileInfo(path='dbfs:/user/hive/', name='hive/', size=0, modificationTime=0)]
+Command took 0.17 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:13:52 PM on Databricks
+Cmd 77
+1
 data_test = df2.createOrReplaceTempView("HumanResources_Employee")
-df2.write.saveAsTable("data_test")
-AnalysisException: Table default.data_test already exists
+Command took 0.07 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:41:39 PM on Databricks
+Cmd 78
+1
+df2.write.saveAsTable("HumanResources_Employee")
+AnalysisException: Table default.HumanResources_Employee already exists
+
+1
+Command took 0.40 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:55:45 PM on Databricks
+Cmd 79
+1
+# Check List Tables
+2
+​
+3
 spark.catalog.listTables()
-Out[141]: [Table(name='data_test', catalog='spark_catalog', namespace=['default'], description=None, tableType='MANAGED', isTemporary=False),
+(2) Spark Jobs
+Out[349]: [Table(name='humanresources_employee', catalog='spark_catalog', namespace=['default'], description=None, tableType='MANAGED', isTemporary=False),
  Table(name='humanresources_employee', catalog='spark_catalog', namespace=None, description=None, tableType='TEMPORARY', isTemporary=True)]
-spark.catalog.listColumns("data_test")
-Out[142]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+Command took 0.30 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:58:49 PM on Databricks
+Cmd 80
+1
+#SHOW VIEWS FROM default LIKE 'humanresources_employee'
+2
+​
+3
+#SHOW VIEWS LIKE ''
+4
+​
+5
+DROP VIEW employeeView
+6
+​
+7
+​
+Command took 0.08 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 1:37:10 PM on Databricks
+Cmd 81
+("humanresources_employee")
+1
+spark.catalog.listColumns("humanresources_employee")
+(8) Spark Jobs
+Out[358]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='NationalIDNumber', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='LoginID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='OrganizationNode', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
@@ -1404,8 +1958,17 @@ Out[142]: [Column(name='BusinessEntityID', description=None, dataType='string', 
  Column(name='CurrentFlag', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='rowguid', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='ModifiedDate', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False)]
+Command took 0.31 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 2:24:06 PM on Databricks
+Cmd 82
+1
+spark.catalog.
+Out[366]: 'spark_catalog'
+Command took 0.07 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 2:29:34 PM on Databricks
+Cmd 83
+1
 spark.catalog.listFunctions()
-Out[143]: [Function(name='!', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.Not', isTemporary=True),
+(8) Spark Jobs
+Out[356]: [Function(name='!', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.Not', isTemporary=True),
  Function(name='%', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.Remainder', isTemporary=True),
  Function(name='&', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.BitwiseAnd', isTemporary=True),
  Function(name='*', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.Multiply', isTemporary=True),
@@ -1719,79 +2282,587 @@ k', catalog=None, namespace=None, description=None, className='org.apache.spark.
  Function(name='zip_with', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.ZipWith', isTemporary=True),
  Function(name='|', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.BitwiseOr', isTemporary=True),
  Function(name='~', catalog=None, namespace=None, description=None, className='org.apache.spark.sql.catalyst.expressions.BitwiseNot', isTemporary=True)]
-dbutils.fs.mkdirs("/FileStore/tables/Bronze/")
-Out[146]: True
-# To Delete Files
+Command took 0.82 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 2:21:46 PM on Databricks
+Cmd 84
+1
+# Delete Files
+2
  
+3
 %fs rm -r dbfs:/FileStore/tables/input/Put here File to delete.csv
+4
  
+5
 # create directory in dbfs
+6
  
+7
 dbutils.fs.mkdirs(" /path/directoryname")
+8
  
+9
 # create file and write data to it
+10
  
+11
 dbutils.fs.put(" /path/filename.txt", "content")
+12
  
+13
 # display file content
+14
  
+15
 dbutils.fs.head("/path/filename.txt")
+16
  
+17
 # list down content in a directory
+18
  
+19
 dbutils.fs.ls("/path/")
+20
  
+21
 # move files from one directory to another directory
+22
  
+23
 dbutils.fs.mv("path1","path2")
+24
  
+25
 # copy file from one directory to another directory
+26
  
+27
 dbutils.fs.cp("path1", "path2")
+28
  
+29
 # remove file and directories
+30
  
+31
 dbutils.fs.rm("path1/file.txt")
+32
 dbutils.fs.rm("path1/", True)
+33
  
+34
 # mount and unmount file system
+35
  
+36
 dbutils.fs.mount("mountpoint")
+37
 dbutils.fs.unmount("mountpoint")
+38
  
+39
 # list down mount
+40
  
+41
 dbutils.fs.mounts()
+42
  
+43
 # refresh mount points
+44
  
+45
 dbutils.fs.refreshMounts()
+46
  
+47
 # install the packages
+48
  
+49
 dbutils.library.installPyPI("tensorflow")
+50
  
+51
 # find current notebook path/from UI
+52
  
+53
 dbutils.notebook.getContext.notebookPath
+54
  
+55
 # run one notebook from another notebook
+56
  
+57
 %run path $name="rama" $location="bangalore"
+58
  
+59
 dbutils.notebook.run("path",600,{"name":"rama","location":"bangalore"})
+60
  
+61
 #exit notebook execution
+62
  
+63
 dbutils.notebook.exit("exit message")
+64
  
+65
 # list down secret scopes Go to Settings to
+66
  
+67
 dbutils.secrets.listScopes()
+68
  
+69
  
+70
  
+71
  
+72
  
 UsageError: Line magic function `%fs` not found.
 UsageError: Line magic function `%fs` not found.
+Command took 0.13 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 2:16:32 PM on Databricks
+Cmd 85
+1
+dbutils.fs.ls("/FileStore/tables/Bronze")
+Out[205]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661337098000)]
+Command took 0.17 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 12:38:49 PM on Databricks
+Cmd 86
+1
+#dbfs:/FileStore/tables/input
+2
+ 
+3
+ 
+4
+ 
+5
+dbutils.fs.cp("dbfs:/FileStore/tables/input/HumanResources_Employee.csv", "dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv")
+6
+ 
+7
+ 
+8
+ 
+Out[195]: True
+Command took 0.68 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 12:31:37 PM on Databricks
+Cmd 87
+1
+%fs
+2
+ 
+3
+ls /FileStore/tables/Bronze
+ 
+path
+name
+size
+modificationTime
+1
+2
+3
+4
+5
+6
+7
+dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv
+HumanResources_Department.csv
+1136
+1661338419000
+dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv
+HumanResources_Employee.csv
+49935
+1661338419000
+dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv
+HumanResources_EmployeeDepartmentHistory.csv
+14550
+1661338420000
+dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv
+HumanResources_EmployeePayHistory.csv
+19343
+1661338420000
+dbfs:/FileStore/tables/Bronze/HumanResources_JobCandidate.csv
+HumanResources_JobCandidate.csv
+64287
+1661338421000
+dbfs:/FileStore/tables/Bronze/HumanResources_Shift.csv
+HumanResources_Shift.csv
+249
+1661338421000
+dbfs:/FileStore/tables/Bronze/Person_Address.csv
+Person_Address.csv
+3082183
+1661338437000
+Showing all 21 rows.
+
+ 
+
+Command took 1.52 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:47:26 PM on Databricks
+Cmd 88
+1
+df = spark.read.format("csv").option("infer Schema" , True).option("header", True ).option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Employee.csv")
+2
+#display(df)
+3
+#print(df.count())
+4
+df.show(1)
+(2) Spark Jobs
+df:pyspark.sql.dataframe.DataFrame = [BusinessEntityID: string, NationalIDNumber: string ... 14 more fields]
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+|BusinessEntityID|NationalIDNumber|             LoginID|OrganizationNode|OrganizationLevel|            JobTitle| BirthDate|MaritalStatus|Gender|  HireDate|SalariedFlag|VacationHours|SickLeaveHours|CurrentFlag|             rowguid|        ModifiedDate|
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+|               1|       295847284|adventure-works\ken0|            NULL|             NULL|Chief Executive O...|1969-01-29|            S|     M|2009-01-14|           1|           99|            69|          1|F01251E5-96A3-448...|2014-06-30 00:00:...|
++----------------+----------------+--------------------+----------------+-----------------+--------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+--------------------+--------------------+
+only showing top 1 row
+
+Command took 0.86 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:48:48 PM on Databricks
+Cmd 89
+1
+dbutils.fs.ls("/FileStore/tables/Bronze")
+Out[368]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661338419000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1661338420000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_JobCandidate.csv', name='HumanResources_JobCandidate.csv', size=64287, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Shift.csv', name='HumanResources_Shift.csv', size=249, modificationTime=1661338421000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Address.csv', name='Person_Address.csv', size=3082183, modificationTime=1661338437000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_AddressType.csv', name='Person_AddressType.csv', size=478, modificationTime=1661338422000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntity.csv', name='Person_BusinessEntity.csv', size=1401772, modificationTime=1661338430000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityAddress.csv', name='Person_BusinessEntityAddress.csv', size=1478939, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_BusinessEntityContact.csv', name='Person_BusinessEntityContact.csv', size=67492, modificationTime=1661338438000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_ContactType.csv', name='Person_ContactType.csv', size=1002, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_CountryRegion.csv', name='Person_CountryRegion.csv', size=9352, modificationTime=1661338439000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EPhoneNumberType.csv', name='Person_EPhoneNumberType.csv', size=136, modificationTime=1661338440000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_EmailAddress.csv', name='Person_EmailAddress.csv', size=2027800, modificationTime=1661338450000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Password.csv', name='Person_Password.csv', size=2426705, modificationTime=1661338453000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_Person.csv', name='Person_Person.csv', size=13646947, modificationTime=1661338522000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_PersonPhone.csv', name='Person_PersonPhone.csv', size=973138, modificationTime=1661338459000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Person_StateProvince.csv', name='Person_StateProvince.csv', size=16212, modificationTime=1661338460000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_BillOfMaterials.csv', name='Production_BillOfMaterials.csv', size=217415, modificationTime=1661338463000),
+ FileInfo(path='dbfs:/FileStore/tables/Bronze/Production_Culture.csv', name='Production_Culture.csv', size=391, modificationTime=1661338464000)]
+Command took 0.24 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:14:03 PM on Databricks
+Cmd 90
+1
+%sql
+2
+​
+3
+show tables
+ 
+database
+tableName
+isTemporary
+1
+2
+default
+humanresources_employee
+false
+humanresources_employee
+true
+Showing all 2 rows.
+
+ 
+
+Command took 0.07 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:46:25 PM on Databricks
+Cmd 91
+1
+%sql
+2
+​
+3
+show views
+ 
+namespace
+viewName
+isTemporary
+1
+humanresources_employee
+true
+Showing all 1 rows.
+
+ 
+
+Command took 0.03 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:46:35 PM on Databricks
+Cmd 92
+humanresources_employee
+1
+%sql
+2
+​
+3
+DESCRIBE EXTENDED humanresources_employee
+ 
+col_name
+data_type
+comment
+1
+2
+3
+4
+5
+6
+7
+BusinessEntityID
+string
+null
+NationalIDNumber
+string
+null
+LoginID
+string
+null
+OrganizationNode
+string
+null
+OrganizationLevel
+string
+null
+JobTitle
+string
+null
+BirthDate
+string
+null
+Showing all 16 rows.
+
+ 
+
+Command took 0.36 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:18:49 PM on Databricks
+Cmd 93
+1
+%sql
+2
+​
+3
+show views in global_temp
+ 
+namespace
+viewName
+isTemporary
+1
+2
+global_temp
+csv
+true
+humanresources_employee
+true
+Showing all 2 rows.
+
+ 
+
+Command took 0.04 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:46:56 PM on Databricks
+Cmd 94
+1
+%sql
+2
+​
+3
+select * from default.humanresources_employee
+(1) Spark Jobs
+ 
+BusinessEntityID
+NationalIDNumber
+LoginID
+OrganizationNode
+OrganizationLevel
+JobTitle
+BirthDate
+MaritalStatus
+Gender
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+1
+295847284
+adventure-works\ken0
+NULL
+NULL
+Chief Executive Officer
+1969-01-29
+S
+M
+2
+245797967
+adventure-works\terri0
+0x58
+1
+Vice President of Engineering
+1971-08-01
+S
+F
+3
+509647174
+adventure-works\roberto0
+0x5AC0
+2
+Engineering Manager
+1974-11-12
+M
+M
+4
+112457891
+adventure-works\rob0
+0x5AD6
+3
+Senior Tool Designer
+1974-12-23
+S
+M
+5
+695256908
+adventure-works\gail0
+0x5ADA
+3
+Design Engineer
+1952-09-27
+M
+F
+6
+998320692
+adventure-works\jossef0
+0x5ADE
+3
+Design Engineer
+1959-03-11
+M
+M
+7
+134969118
+adventure-works\dylan0
+0x5AE1
+3
+Research and Development Manager
+1987-02-24
+M
+M
+8
+811994146
+adventure-works\diane1
+0x5AE158
+4
+Research and Development Engineer
+1986-06-05
+S
+F
+9
+658797903
+adventure-works\gigi0
+0x5AE168
+4
+Research and Development Engineer
+1979-01-21
+M
+F
+10
+879342154
+adventure-works\michael6
+0x5AE178
+4
+Research and Development Manager
+1984-11-30
+M
+M
+11
+974026903
+adventure-works\ovidiu0
+0x5AE3
+3
+Senior Tool Designer
+1978-01-17
+S
+M
+12
+480168528
+adventure-works\thierry0
+0x5AE358
+4
+Tool Designer
+1959-07-29
+M
+M
+13
+486228782
+adventure-works\janice0
+0x5AE368
+4
+Tool Designer
+1989-05-28
+M
+F
+14
+42487730
+adventure-works\michael8
+0x5AE5
+3
+Senior Design Engineer
+1979-06-16
+S
+M
+15
+56920285
+adventure-works\sharon0
+0x5AE7
+3
+Design Engineer
+1961-05-02
+M
+F
+16
+24756624
+adventure-works\david0
+0x68
+1
+Marketing Manager
+1975-03-19
+S
+M
+17
+253022876
+adventure-works\kevin0
+0x6AC0
+2
+Marketing Assistant
+1987-05-03
+S
+M
+Showing all 290 rows.
+
+ 
+
+Command took 0.58 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:47:15 PM on Databricks
+Cmd 95
+1
+#View Constructs a virtual table that has no physical data
+2
+#CreateOrReplace TempView:It is session based. It is saved in default database
+3
+#CreateOrReplaceGlobalTempView:It is not session based. It is saved in global_temp database
+Command took 0.09 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:49:07 PM on Databricks
+Cmd 96
+1
+df.createOrReplaceGlobalTempView('HumanResources_Employee.csv')
+Command took 0.10 seconds -- by usaferreiratiago@gmail.com at 8/24/2022, 3:45:49 PM on Databricks
