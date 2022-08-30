@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 #import findspark as fd
 dbutils.fs.ls("/FileStore/tables/Bronze/")
  
-Out[10]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
+Out[3]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661338419000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1661338420000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1661338420000),
@@ -114,7 +114,7 @@ root
 # Checking Datas null -- Pandas has limitations #Don't use - Only try
  
 df.toPandas().isna().sum()
-Out[15]: DepartmentID    0
+Out[7]: DepartmentID    0
 Name            0
 GroupName       0
 ModifiedDate    0
@@ -144,7 +144,7 @@ only showing top 3 rows
 # Check all Columns
  
 df.columns
-Out[20]: ['DepartmentID', 'Name', 'GroupName', 'ModifiedDate']
+Out[10]: ['DepartmentID', 'Name', 'GroupName', 'ModifiedDate']
 # Select Columns
  
 df.select(col('GroupName'),col('Name')).show(3)
@@ -399,9 +399,9 @@ df.select(col('ModifiedDate'),
 +--------------------+----------------------------+
 |        ModifiedDate|difference between two dates|
 +--------------------+----------------------------+
-|2008-04-30 00:00:...|                        5234|
-|2008-04-30 00:00:...|                        5234|
-|2008-04-30 00:00:...|                        5234|
+|2008-04-30 00:00:...|                        5235|
+|2008-04-30 00:00:...|                        5235|
+|2008-04-30 00:00:...|                        5235|
 +--------------------+----------------------------+
 only showing top 3 rows
 
@@ -415,9 +415,9 @@ df.select(col("ModifiedDate"),
 +--------------------+--------------+
 |        ModifiedDate|months_between|
 +--------------------+--------------+
-|2008-04-30 00:00:...|   171.9813243|
-|2008-04-30 00:00:...|   171.9813243|
-|2008-04-30 00:00:...|   171.9813243|
+|2008-04-30 00:00:...|         172.0|
+|2008-04-30 00:00:...|         172.0|
+|2008-04-30 00:00:...|         172.0|
 +--------------------+--------------+
 only showing top 3 rows
 
@@ -564,16 +564,16 @@ df.withColumn("datetrnc",date_trunc('mm' , "ModifiedDate")).show(2)
 +------------+-----------+--------------------+--------------------+----------+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|  cur_date|
 +------------+-----------+--------------------+--------------------+----------+
-|           1|Engineering|Research and Deve...|2008-04-30 00:00:...|2022-08-29|
-|           2|Tool Design|Research and Deve...|2008-04-30 00:00:...|2022-08-29|
+|           1|Engineering|Research and Deve...|2008-04-30 00:00:...|2022-08-30|
+|           2|Tool Design|Research and Deve...|2008-04-30 00:00:...|2022-08-30|
 +------------+-----------+--------------------+--------------------+----------+
 only showing top 2 rows
 
 +------------+-----------+--------------------+--------------------+----+
 |DepartmentID|       Name|           GroupName|        ModifiedDate|Days|
 +------------+-----------+--------------------+--------------------+----+
-|           1|Engineering|Research and Deve...|2008-04-30 00:00:...|5234|
-|           2|Tool Design|Research and Deve...|2008-04-30 00:00:...|5234|
+|           1|Engineering|Research and Deve...|2008-04-30 00:00:...|5235|
+|           2|Tool Design|Research and Deve...|2008-04-30 00:00:...|5235|
 +------------+-----------+--------------------+--------------------+----+
 only showing top 2 rows
 
@@ -616,7 +616,7 @@ only showing top 3 rows
 # Using Collect - show all the rows#
  
 df.select(col('GroupName')).distinct().collect()
-Out[59]: [Row(GroupName='Executive General and Administration'),
+Out[41]: [Row(GroupName='Executive General and Administration'),
  Row(GroupName='Sales and Marketing'),
  Row(GroupName='Research and Development'),
  Row(GroupName='Quality Assurance'),
@@ -624,17 +624,17 @@ Out[59]: [Row(GroupName='Executive General and Administration'),
  Row(GroupName='Inventory Management')]
 list = df.select(col('GroupName')).collect()
 type(list[0][0])
-Out[61]: str
+Out[43]: str
 list[5][0]
-Out[62]: 'Research and Development'
+Out[44]: 'Research and Development'
 list[0][0]
-Out[63]: 'Research and Development'
+Out[45]: 'Research and Development'
 # Generating a list GroupName = []
  
 for GroupName in list:
     GroupName.asDict(GroupName[0])
 GroupName
-Out[64]: Row(GroupName='Executive General and Administration')
+Out[46]: Row(GroupName='Executive General and Administration')
 ## Working with When () / Otherwise()##
  
 ##df.withColumn('Correct', when(col('GroupName') == "Manufacturing", lit("OK"))).otherwise("NOT")
@@ -772,7 +772,7 @@ ModifiedDate 0
 # Check all Columns
  
 df2.columns
-Out[77]: ['BusinessEntityID',
+Out[59]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -844,7 +844,7 @@ only showing top 3 rows
 #df.DepartmentID.alias('Department'), \
 #df.Name.alias('Name')).show(truncate= False)
 df2.columns
-Out[82]: ['BusinessEntityID',
+Out[64]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -892,7 +892,7 @@ StartDate 0
 EndDate 0
 ModifiedDate 0
 df3.columns
-Out[86]: ['BusinessEntityID',
+Out[68]: ['BusinessEntityID',
  'DepartmentID',
  'ShiftID',
  'StartDate',
@@ -938,39 +938,9 @@ Showing all 5 rows.
  # Recursively remove the files under foobar
     
  %fs rm -r dbfs:/foobar
+Command skipped
  %fs ls
- 
-path
-name
-size
-modificationTime
-1
-2
-3
-4
-5
-dbfs:/ /
-/
-0
-0
-dbfs:/FileStore/
-FileStore/
-0
-0
-dbfs:/databricks-datasets/
-databricks-datasets/
-0
-0
-dbfs:/databricks-results/
-databricks-results/
-0
-0
-dbfs:/user/
-user/
-0
-0
-Showing all 5 rows.
-
+Command skipped
 # using Split - only to know about it, if see on another code
 # Always you need to put ## [ df = ]## to Save
  
@@ -1008,11 +978,15 @@ CASE
 END AS Gender
 FROM HumanResources_Employee
  
-where JobTitle in ('Senior Tool Designer','Tool Designer') 
+where JobTitle in ('Senior Tool Designer','Tool Designer') --and SUBSTRING(LoginID, 17, 100) = 'rob0'
  
  
  
 """).show(truncate=False)
+ 
+#display(data_test)
+ 
+ 
 +--------+----------+--------------------+----------+-------------+------+
 |Login   |HireDate  |JobTitle            |BirthDate |MaritalStatus|Gender|
 +--------+----------+--------------------+----------+-------------+------+
@@ -1033,22 +1007,18 @@ database
 tableName
 isTemporary
 1
-2
-default
-humanresources_employee
-false
 humanresources_employee
 true
-Showing all 2 rows.
+Showing all 1 rows.
 
 # Check List Databases
  
 spark.catalog.listDatabases()
-Out[123]: [Database(name='default', catalog='spark_catalog', description='Default Hive database', locationUri='dbfs:/user/hive/warehouse')]
+Out[74]: [Database(name='default', catalog='spark_catalog', description='Default Hive database', locationUri='dbfs:/user/hive/warehouse')]
 # Check Columns on the Table
  
 spark.catalog.listColumns("HumanResources_Employee")
-Out[126]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+Out[75]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='NationalIDNumber', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='LoginID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='OrganizationNode', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
@@ -1067,7 +1037,7 @@ Out[126]: [Column(name='BusinessEntityID', description=None, dataType='string', 
 # Check Files inside of Folder
  
 dbutils.fs.ls("/FileStore/tables/Bronze/")
-Out[128]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
+Out[76]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Department.csv', name='HumanResources_Department.csv', size=1136, modificationTime=1661338419000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Employee.csv', name='HumanResources_Employee.csv', size=49935, modificationTime=1661338419000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeeDepartmentHistory.csv', name='HumanResources_EmployeeDepartmentHistory.csv', size=14550, modificationTime=1661338420000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_EmployeePayHistory.csv', name='HumanResources_EmployeePayHistory.csv', size=19343, modificationTime=1661338420000),
@@ -1136,12 +1106,11 @@ Out[128]: [FileInfo(path='dbfs:/FileStore/tables/Bronze/HumanResources_Departmen
  FileInfo(path='dbfs:/FileStore/tables/Bronze/Sales_SpecialOffer.csv', name='Sales_SpecialOffer.csv', size=2886, modificationTime=1661766596000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/Sales_SpecialOfferProduct.csv', name='Sales_SpecialOfferProduct.csv', size=36680, modificationTime=1661766597000),
  FileInfo(path='dbfs:/FileStore/tables/Bronze/Sales_Store.csv', name='Sales_Store.csv', size=360866, modificationTime=1661766599000)]
-df.write.option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")
+#df.write.option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")
 # Check List Tables
  
 spark.catalog.listTables()
-Out[349]: [Table(name='humanresources_employee', catalog='spark_catalog', namespace=['default'], description=None, tableType='MANAGED', isTemporary=False),
- Table(name='humanresources_employee', catalog='spark_catalog', namespace=None, description=None, tableType='TEMPORARY', isTemporary=True)]
+Out[79]: [Table(name='HumanResources_Employee', catalog=None, namespace=[], description=None, tableType='TEMPORARY', isTemporary=True)]
 #SHOW VIEWS FROM default LIKE 'humanresources_employee'
  
 #SHOW VIEWS LIKE ''
@@ -1150,7 +1119,7 @@ Out[349]: [Table(name='humanresources_employee', catalog='spark_catalog', namesp
  
  
 spark.catalog.listColumns("humanresources_employee")
-Out[98]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+Out[81]: [Column(name='BusinessEntityID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='NationalIDNumber', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='LoginID', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
  Column(name='OrganizationNode', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
@@ -1169,6 +1138,7 @@ Out[98]: [Column(name='BusinessEntityID', description=None, dataType='string', n
 # Delete Files
  
 %fs rm -r dbfs:/FileStore/tables/input/Put here File to delete.csv
+dbutils.fs.rm('/mnt/adls2/demo/target/', True)
  
 # create directory in dbfs
  
@@ -1238,8 +1208,7 @@ dbutils.secrets.listScopes()
  
  
  
-UsageError: Line magic function `%fs` not found.
-UsageError: Line magic function `%fs` not found.
+Command skipped
 %fs
  
 ls /FileStore/tables/Bronze
@@ -1453,13 +1422,9 @@ database
 tableName
 isTemporary
 1
-2
-default
-humanresources_employee
-false
 humanresources_employee
 true
-Showing all 2 rows.
+Showing all 1 rows.
 
 %sql
  
@@ -1554,17 +1519,13 @@ namespace
 viewName
 isTemporary
 1
-2
-global_temp
-csv
-true
 humanresources_employee
 true
-Showing all 2 rows.
+Showing all 1 rows.
 
 %sql
  
-select * from default.humanresources_employee
+select * from humanresources_employee
  
 BusinessEntityID
 NationalIDNumber
@@ -1768,37 +1729,517 @@ Showing all 290 rows.
 #View Constructs a virtual table that has no physical data
 #CreateOrReplace TempView:It is session based. It is saved in default database
 #CreateOrReplaceGlobalTempView:It is not session based. It is saved in global_temp database
+# Create Global Temp View
+ 
 df.createOrReplaceGlobalTempView('HumanResources_Employee.csv')
 # Save as csv file
  
-df.write.csv("/FileStore/tables/Silver/Test.csv")
+#df.write.csv("/FileStore/tables/Silver/Test.csv")
 df2 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Employee.csv")
+display(df2)
+#print(df.count())
+#df2.show(3)
+ 
+BusinessEntityID
+NationalIDNumber
+LoginID
+OrganizationNode
+OrganizationLevel
+JobTitle
+BirthDate
+MaritalStatus
+Gender
+HireDate
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+1
+295847284
+adventure-works\ken0
+NULL
+NULL
+Chief Executive Officer
+1969-01-29
+S
+M
+2009-01-14
+2
+245797967
+adventure-works\terri0
+0x58
+1
+Vice President of Engineering
+1971-08-01
+S
+F
+2008-01-31
+3
+509647174
+adventure-works\roberto0
+0x5AC0
+2
+Engineering Manager
+1974-11-12
+M
+M
+2007-11-11
+4
+112457891
+adventure-works\rob0
+0x5AD6
+3
+Senior Tool Designer
+1974-12-23
+S
+M
+2007-12-05
+5
+695256908
+adventure-works\gail0
+0x5ADA
+3
+Design Engineer
+1952-09-27
+M
+F
+2008-01-06
+6
+998320692
+adventure-works\jossef0
+0x5ADE
+3
+Design Engineer
+1959-03-11
+M
+M
+2008-01-24
+7
+134969118
+adventure-works\dylan0
+0x5AE1
+3
+Research and Development Manager
+1987-02-24
+M
+M
+2009-02-08
+8
+811994146
+adventure-works\diane1
+0x5AE158
+4
+Research and Development Engineer
+1986-06-05
+S
+F
+2008-12-29
+9
+658797903
+adventure-works\gigi0
+0x5AE168
+4
+Research and Development Engineer
+1979-01-21
+M
+F
+2009-01-16
+10
+879342154
+adventure-works\michael6
+0x5AE178
+4
+Research and Development Manager
+1984-11-30
+M
+M
+2009-05-03
+11
+974026903
+adventure-works\ovidiu0
+0x5AE3
+3
+Senior Tool Designer
+1978-01-17
+S
+M
+2010-12-05
+12
+480168528
+adventure-works\thierry0
+0x5AE358
+4
+Tool Designer
+1959-07-29
+M
+M
+2007-12-11
+13
+486228782
+adventure-works\janice0
+0x5AE368
+4
+Tool Designer
+1989-05-28
+M
+F
+2010-12-23
+14
+42487730
+adventure-works\michael8
+0x5AE5
+3
+Senior Design Engineer
+1979-06-16
+S
+M
+2010-12-30
+15
+56920285
+adventure-works\sharon0
+0x5AE7
+3
+Design Engineer
+1961-05-02
+M
+F
+2011-01-18
+16
+24756624
+adventure-works\david0
+0x68
+1
+Marketing Manager
+1975-03-19
+S
+M
+2007-12-20
+17
+253022876
+adventure-works\kevin0
+0x6AC0
+2
+Marketing Assistant
+1987-05-03
+S
+M
+2007-01-26
+Showing all 290 rows.
+
+df4 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Department.csv")
 #display(df)
 #print(df.count())
-df2.show(truncate=False)
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-|BusinessEntityID|NationalIDNumber|LoginID                 |OrganizationNode|OrganizationLevel|JobTitle                         |BirthDate |MaritalStatus|Gender|HireDate  |SalariedFlag|VacationHours|SickLeaveHours|CurrentFlag|rowguid                             |ModifiedDate           |
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-|1               |295847284       |adventure-works\ken0    |NULL            |NULL             |Chief Executive Officer          |1969-01-29|S            |M     |2009-01-14|1           |99           |69            |1          |F01251E5-96A3-448D-981E-0F99D789110D|2014-06-30 00:00:00.000|
-|2               |245797967       |adventure-works\terri0  |0x58            |1                |Vice President of Engineering    |1971-08-01|S            |F     |2008-01-31|1           |1            |20            |1          |45E8F437-670D-4409-93CB-F9424A40D6EE|2014-06-30 00:00:00.000|
-|3               |509647174       |adventure-works\roberto0|0x5AC0          |2                |Engineering Manager              |1974-11-12|M            |M     |2007-11-11|1           |2            |21            |1          |9BBBFB2C-EFBB-4217-9AB7-F97689328841|2014-06-30 00:00:00.000|
-|4               |112457891       |adventure-works\rob0    |0x5AD6          |3                |Senior Tool Designer             |1974-12-23|S            |M     |2007-12-05|0           |48           |80            |1          |59747955-87B8-443F-8ED4-F8AD3AFDF3A9|2014-06-30 00:00:00.000|
-|5               |695256908       |adventure-works\gail0   |0x5ADA          |3                |Design Engineer                  |1952-09-27|M            |F     |2008-01-06|1           |5            |22            |1          |EC84AE09-F9B8-4A15-B4A9-6CCBAB919B08|2014-06-30 00:00:00.000|
-|6               |998320692       |adventure-works\jossef0 |0x5ADE          |3                |Design Engineer                  |1959-03-11|M            |M     |2008-01-24|1           |6            |23            |1          |E39056F1-9CD5-478D-8945-14ACA7FBDCDD|2014-06-30 00:00:00.000|
-|7               |134969118       |adventure-works\dylan0  |0x5AE1          |3                |Research and Development Manager |1987-02-24|M            |M     |2009-02-08|1           |61           |50            |1          |4F46DECA-EF01-41FD-9829-0ADAB368E431|2014-06-30 00:00:00.000|
-|8               |811994146       |adventure-works\diane1  |0x5AE158        |4                |Research and Development Engineer|1986-06-05|S            |F     |2008-12-29|1           |62           |51            |1          |31112635-663B-4018-B4A2-A685C0BF48A4|2014-06-30 00:00:00.000|
-|9               |658797903       |adventure-works\gigi0   |0x5AE168        |4                |Research and Development Engineer|1979-01-21|M            |F     |2009-01-16|1           |63           |51            |1          |50B6CDC6-7570-47EF-9570-48A64B5F2ECF|2014-06-30 00:00:00.000|
-|10              |879342154       |adventure-works\michael6|0x5AE178        |4                |Research and Development Manager |1984-11-30|M            |M     |2009-05-03|1           |16           |64            |1          |EAA43680-5571-40CB-AB1A-3BF68F04459E|2014-06-30 00:00:00.000|
-|11              |974026903       |adventure-works\ovidiu0 |0x5AE3          |3                |Senior Tool Designer             |1978-01-17|S            |M     |2010-12-05|0           |7            |23            |1          |F68C7C19-FAC1-438C-9BB7-AC33FCC341C3|2014-06-30 00:00:00.000|
-|12              |480168528       |adventure-works\thierry0|0x5AE358        |4                |Tool Designer                    |1959-07-29|M            |M     |2007-12-11|0           |9            |24            |1          |1D955171-E773-4FAD-8382-40FD898D5D4D|2014-06-30 00:00:00.000|
-|13              |486228782       |adventure-works\janice0 |0x5AE368        |4                |Tool Designer                    |1989-05-28|M            |F     |2010-12-23|0           |8            |24            |1          |954B91B6-5AA7-48C2-8685-6E11C6E5C49A|2014-06-30 00:00:00.000|
-|14              |42487730        |adventure-works\michael8|0x5AE5          |3                |Senior Design Engineer           |1979-06-16|S            |M     |2010-12-30|1           |3            |21            |1          |46286CA4-46DD-4DDB-9128-85B67E98D1A9|2014-06-30 00:00:00.000|
-|15              |56920285        |adventure-works\sharon0 |0x5AE7          |3                |Design Engineer                  |1961-05-02|M            |F     |2011-01-18|1           |4            |22            |1          |54F2FDC0-87C4-4065-A7A8-9AC8EA624235|2014-06-30 00:00:00.000|
-|16              |24756624        |adventure-works\david0  |0x68            |1                |Marketing Manager                |1975-03-19|S            |M     |2007-12-20|1           |40           |40            |1          |E87029AA-2CBA-4C03-B948-D83AF0313E28|2014-06-30 00:00:00.000|
-|17              |253022876       |adventure-works\kevin0  |0x6AC0          |2                |Marketing Assistant              |1987-05-03|S            |M     |2007-01-26|0           |42           |41            |1          |1B480240-95C0-410F-A717-EB29943C8886|2014-06-30 00:00:00.000|
-|18              |222969461       |adventure-works\john5   |0x6B40          |2                |Marketing Specialist             |1978-03-06|S            |M     |2011-02-07|0           |48           |44            |1          |64730415-1F58-4E5B-8FA8-5E4DAEBA53B4|2014-06-30 00:00:00.000|
-|19              |52541318        |adventure-works\mary2   |0x6BC0          |2                |Marketing Assistant              |1978-01-29|S            |F     |2011-02-14|0           |43           |41            |1          |1F6DA901-C7F7-48A8-8EEF-D81868D72B52|2014-06-30 00:00:00.000|
-|20              |323403273       |adventure-works\wanida0 |0x6C20          |2                |Marketing Assistant              |1975-03-17|M            |F     |2011-01-07|0           |41           |40            |1          |43CCA446-DA1C-454C-8530-873AD2923E1B|2014-06-30 00:00:00.000|
-+----------------+----------------+------------------------+----------------+-----------------+---------------------------------+----------+-------------+------+----------+------------+-------------+--------------+-----------+------------------------------------+-----------------------+
-only showing top 20 rows
+df4.show(3)
++------------+-----------+--------------------+--------------------+
+|DepartmentID|       Name|           GroupName|        ModifiedDate|
++------------+-----------+--------------------+--------------------+
+|           1|Engineering|Research and Deve...|2008-04-30 00:00:...|
+|           2|Tool Design|Research and Deve...|2008-04-30 00:00:...|
+|           3|      Sales| Sales and Marketing|2008-04-30 00:00:...|
++------------+-----------+--------------------+--------------------+
+only showing top 3 rows
 
+spark.read.format("delta").load("/FileStore/tables/Silver")
+ 
+display(df)
+ 
+BusinessEntityID
+NationalIDNumber
+LoginID
+OrganizationNode
+OrganizationLevel
+JobTitle
+BirthDate
+MaritalStatus
+Gender
+HireDate
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+1
+295847284
+adventure-works\ken0
+NULL
+NULL
+Chief Executive Officer
+1969-01-29
+S
+M
+2009-01-14
+2
+245797967
+adventure-works\terri0
+0x58
+1
+Vice President of Engineering
+1971-08-01
+S
+F
+2008-01-31
+3
+509647174
+adventure-works\roberto0
+0x5AC0
+2
+Engineering Manager
+1974-11-12
+M
+M
+2007-11-11
+4
+112457891
+adventure-works\rob0
+0x5AD6
+3
+Senior Tool Designer
+1974-12-23
+S
+M
+2007-12-05
+5
+695256908
+adventure-works\gail0
+0x5ADA
+3
+Design Engineer
+1952-09-27
+M
+F
+2008-01-06
+6
+998320692
+adventure-works\jossef0
+0x5ADE
+3
+Design Engineer
+1959-03-11
+M
+M
+2008-01-24
+7
+134969118
+adventure-works\dylan0
+0x5AE1
+3
+Research and Development Manager
+1987-02-24
+M
+M
+2009-02-08
+8
+811994146
+adventure-works\diane1
+0x5AE158
+4
+Research and Development Engineer
+1986-06-05
+S
+F
+2008-12-29
+9
+658797903
+adventure-works\gigi0
+0x5AE168
+4
+Research and Development Engineer
+1979-01-21
+M
+F
+2009-01-16
+10
+879342154
+adventure-works\michael6
+0x5AE178
+4
+Research and Development Manager
+1984-11-30
+M
+M
+2009-05-03
+11
+974026903
+adventure-works\ovidiu0
+0x5AE3
+3
+Senior Tool Designer
+1978-01-17
+S
+M
+2010-12-05
+12
+480168528
+adventure-works\thierry0
+0x5AE358
+4
+Tool Designer
+1959-07-29
+M
+M
+2007-12-11
+13
+486228782
+adventure-works\janice0
+0x5AE368
+4
+Tool Designer
+1989-05-28
+M
+F
+2010-12-23
+14
+42487730
+adventure-works\michael8
+0x5AE5
+3
+Senior Design Engineer
+1979-06-16
+S
+M
+2010-12-30
+15
+56920285
+adventure-works\sharon0
+0x5AE7
+3
+Design Engineer
+1961-05-02
+M
+F
+2011-01-18
+16
+24756624
+adventure-works\david0
+0x68
+1
+Marketing Manager
+1975-03-19
+S
+M
+2007-12-20
+17
+253022876
+adventure-works\kevin0
+0x6AC0
+2
+Marketing Assistant
+1987-05-03
+S
+M
+2007-01-26
+18
+222969461
+adventure-works\john5
+0x6B40
+2
+Marketing Specialist
+1978-03-06
+S
+M
+2011-02-07
+Showing all 290 rows.
+
+# Auto Optimize
+ 
+%sql
+ set spark.databricks.delta.properties.defaults.autoOptimize.optimizeWrite = true;
+ 
+key
+value
+1
+spark.databricks.delta.properties.defaults.autoOptimize.optimizeWrite
+true
+Showing all 1 rows.
+
+#%fs rm -r dbfs:("/FileStore/tables/Silver/part-00000-18b45f5f-7bcb-4fa7-8b16-9e5793e9134c-c000.snappy.parquet")
+ 
+#dbutils.fs.rm('/FileStore/tables/Silver/part-00000-2147ffad-94ea-4022-84a6-39f0a33d9460-c000.snappy.parquet', True)
+ 
+#/dbfs/FileStore /dbfs/FileStore/tables/Silver/_delta_log
+ 
+dbutils.fs.rm('/FileStore/tables/Silver/_delta_log', True)
+Out[109]: True
+# Create lobal TempView
+ 
+ 
+df.createOrReplaceGlobalTempView('HumanResources_Employee.csv')
+# SQL inside Pyspark
+ 
+data_test = spark.sql("""SELECT
+ 
+ 
+ SUBSTRING(LoginID, 17, 100) AS Login, 
+ SUBSTRING(HireDate, 1, 10) AS HireDate,
+ JobTitle,
+ SUBSTRING(BirthDate, 1, 10) AS BirthDate,
+ CASE
+    WHEN MaritalStatus = 'S' THEN 'Single'
+    WHEN MaritalStatus = 'M' THEN 'Married'
+    ELSE ''
+END AS MaritalStatus,
+CASE
+    WHEN Gender = 'M' THEN 'Male'
+    WHEN Gender = 'F' THEN 'Female'
+    ELSE ''
+END AS Gender
+FROM HumanResources_Employee
+ 
+where JobTitle in ('Senior Tool Designer','Tool Designer') and SUBSTRING(LoginID, 17, 100) = 'rob0'
+ 
+ 
+ 
+""")
+ 
+ 
+display(data_test)
+#3.show(truncate=False)
+ 
+Login
+HireDate
+JobTitle
+BirthDate
+MaritalStatus
+Gender
+1
+rob0
+2007-12-05
+Senior Tool Designer
+1974-12-23
+Single
+Male
+Showing all 1 rows.
+
+#df.write.option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")    
+# Save Table with overwrite mode
+ 
+data_test.write.mode("overwrite").format("delta").option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")
+# Save Table with Append mode
+ 
+#data_test.write.mode("Append").format("delta").option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")
