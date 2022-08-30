@@ -772,7 +772,7 @@ ModifiedDate 0
 # Check all Columns
  
 df2.columns
-Out[59]: ['BusinessEntityID',
+Out[56]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -844,7 +844,7 @@ only showing top 3 rows
 #df.DepartmentID.alias('Department'), \
 #df.Name.alias('Name')).show(truncate= False)
 df2.columns
-Out[64]: ['BusinessEntityID',
+Out[61]: ['BusinessEntityID',
  'NationalIDNumber',
  'LoginID',
  'OrganizationNode',
@@ -892,7 +892,7 @@ StartDate 0
 EndDate 0
 ModifiedDate 0
 df3.columns
-Out[68]: ['BusinessEntityID',
+Out[65]: ['BusinessEntityID',
  'DepartmentID',
  'ShiftID',
  'StartDate',
@@ -933,14 +933,44 @@ Showing all 5 rows.
 
  # List the DBFS root
     
- %fs ls
+# %fs ls
     
  # Recursively remove the files under foobar
     
- %fs rm -r dbfs:/foobar
-Command skipped
+# %fs rm -r dbfs:/foobar
  %fs ls
-Command skipped
+ 
+path
+name
+size
+modificationTime
+1
+2
+3
+4
+5
+dbfs:/ /
+/
+0
+0
+dbfs:/FileStore/
+FileStore/
+0
+0
+dbfs:/databricks-datasets/
+databricks-datasets/
+0
+0
+dbfs:/databricks-results/
+databricks-results/
+0
+0
+dbfs:/user/
+user/
+0
+0
+Showing all 5 rows.
+
 # using Split - only to know about it, if see on another code
 # Always you need to put ## [ df = ]## to Save
  
@@ -999,6 +1029,7 @@ where JobTitle in ('Senior Tool Designer','Tool Designer') --and SUBSTRING(Login
 # Save as TAble ("Will be saved as parquet file")
  
 df2.write.option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")                                                                          ##df2.write.saveAsTable("HumanResources_Employee")
+AnalysisException: Table default.HumanResources_Employee already exists
 %sql
  
 SHOW TABLES
@@ -1537,6 +1568,10 @@ BirthDate
 MaritalStatus
 Gender
 HireDate
+SalariedFlag
+VacationHours
+SickLeaveHours
+CurrentFlag
 1
 2
 3
@@ -1564,6 +1599,10 @@ Chief Executive Officer
 S
 M
 2009-01-14
+1
+99
+69
+1
 2
 245797967
 adventure-works\terri0
@@ -1574,6 +1613,10 @@ Vice President of Engineering
 S
 F
 2008-01-31
+1
+1
+20
+1
 3
 509647174
 adventure-works\roberto0
@@ -1584,6 +1627,10 @@ Engineering Manager
 M
 M
 2007-11-11
+1
+2
+21
+1
 4
 112457891
 adventure-works\rob0
@@ -1594,6 +1641,10 @@ Senior Tool Designer
 S
 M
 2007-12-05
+0
+48
+80
+1
 5
 695256908
 adventure-works\gail0
@@ -1604,6 +1655,10 @@ Design Engineer
 M
 F
 2008-01-06
+1
+5
+22
+1
 6
 998320692
 adventure-works\jossef0
@@ -1614,6 +1669,10 @@ Design Engineer
 M
 M
 2008-01-24
+1
+6
+23
+1
 7
 134969118
 adventure-works\dylan0
@@ -1624,6 +1683,10 @@ Research and Development Manager
 M
 M
 2009-02-08
+1
+61
+50
+1
 8
 811994146
 adventure-works\diane1
@@ -1634,6 +1697,10 @@ Research and Development Engineer
 S
 F
 2008-12-29
+1
+62
+51
+1
 9
 658797903
 adventure-works\gigi0
@@ -1644,6 +1711,10 @@ Research and Development Engineer
 M
 F
 2009-01-16
+1
+63
+51
+1
 10
 879342154
 adventure-works\michael6
@@ -1654,6 +1725,10 @@ Research and Development Manager
 M
 M
 2009-05-03
+1
+16
+64
+1
 11
 974026903
 adventure-works\ovidiu0
@@ -1664,6 +1739,10 @@ Senior Tool Designer
 S
 M
 2010-12-05
+0
+7
+23
+1
 12
 480168528
 adventure-works\thierry0
@@ -1674,6 +1753,10 @@ Tool Designer
 M
 M
 2007-12-11
+0
+9
+24
+1
 13
 486228782
 adventure-works\janice0
@@ -1684,6 +1767,10 @@ Tool Designer
 M
 F
 2010-12-23
+0
+8
+24
+1
 14
 42487730
 adventure-works\michael8
@@ -1694,6 +1781,10 @@ Senior Design Engineer
 S
 M
 2010-12-30
+1
+3
+21
+1
 15
 56920285
 adventure-works\sharon0
@@ -1704,6 +1795,10 @@ Design Engineer
 M
 F
 2011-01-18
+1
+4
+22
+1
 16
 24756624
 adventure-works\david0
@@ -1714,6 +1809,10 @@ Marketing Manager
 S
 M
 2007-12-20
+1
+40
+40
+1
 17
 253022876
 adventure-works\kevin0
@@ -1724,6 +1823,10 @@ Marketing Assistant
 S
 M
 2007-01-26
+0
+42
+41
+1
 Showing all 290 rows.
 
 #View Constructs a virtual table that has no physical data
@@ -1750,6 +1853,10 @@ BirthDate
 MaritalStatus
 Gender
 HireDate
+SalariedFlag
+VacationHours
+SickLeaveHours
+CurrentFlag
 1
 2
 3
@@ -1777,6 +1884,10 @@ Chief Executive Officer
 S
 M
 2009-01-14
+1
+99
+69
+1
 2
 245797967
 adventure-works\terri0
@@ -1787,6 +1898,10 @@ Vice President of Engineering
 S
 F
 2008-01-31
+1
+1
+20
+1
 3
 509647174
 adventure-works\roberto0
@@ -1797,6 +1912,10 @@ Engineering Manager
 M
 M
 2007-11-11
+1
+2
+21
+1
 4
 112457891
 adventure-works\rob0
@@ -1807,6 +1926,10 @@ Senior Tool Designer
 S
 M
 2007-12-05
+0
+48
+80
+1
 5
 695256908
 adventure-works\gail0
@@ -1817,6 +1940,10 @@ Design Engineer
 M
 F
 2008-01-06
+1
+5
+22
+1
 6
 998320692
 adventure-works\jossef0
@@ -1827,6 +1954,10 @@ Design Engineer
 M
 M
 2008-01-24
+1
+6
+23
+1
 7
 134969118
 adventure-works\dylan0
@@ -1837,6 +1968,10 @@ Research and Development Manager
 M
 M
 2009-02-08
+1
+61
+50
+1
 8
 811994146
 adventure-works\diane1
@@ -1847,6 +1982,10 @@ Research and Development Engineer
 S
 F
 2008-12-29
+1
+62
+51
+1
 9
 658797903
 adventure-works\gigi0
@@ -1857,6 +1996,10 @@ Research and Development Engineer
 M
 F
 2009-01-16
+1
+63
+51
+1
 10
 879342154
 adventure-works\michael6
@@ -1867,6 +2010,10 @@ Research and Development Manager
 M
 M
 2009-05-03
+1
+16
+64
+1
 11
 974026903
 adventure-works\ovidiu0
@@ -1877,6 +2024,10 @@ Senior Tool Designer
 S
 M
 2010-12-05
+0
+7
+23
+1
 12
 480168528
 adventure-works\thierry0
@@ -1887,6 +2038,10 @@ Tool Designer
 M
 M
 2007-12-11
+0
+9
+24
+1
 13
 486228782
 adventure-works\janice0
@@ -1897,6 +2052,10 @@ Tool Designer
 M
 F
 2010-12-23
+0
+8
+24
+1
 14
 42487730
 adventure-works\michael8
@@ -1907,6 +2066,10 @@ Senior Design Engineer
 S
 M
 2010-12-30
+1
+3
+21
+1
 15
 56920285
 adventure-works\sharon0
@@ -1917,6 +2080,10 @@ Design Engineer
 M
 F
 2011-01-18
+1
+4
+22
+1
 16
 24756624
 adventure-works\david0
@@ -1927,6 +2094,10 @@ Marketing Manager
 S
 M
 2007-12-20
+1
+40
+40
+1
 17
 253022876
 adventure-works\kevin0
@@ -1937,6 +2108,10 @@ Marketing Assistant
 S
 M
 2007-01-26
+0
+42
+41
+1
 Showing all 290 rows.
 
 df4 = spark.read.format("csv").option("infer Schema" , True) .option("header", True ) .option("sep",","). load("/FileStore/tables/Bronze/HumanResources_Department.csv")
@@ -1966,6 +2141,10 @@ BirthDate
 MaritalStatus
 Gender
 HireDate
+SalariedFlag
+VacationHours
+SickLeaveHours
+CurrentFlag
 1
 2
 3
@@ -1994,6 +2173,10 @@ Chief Executive Officer
 S
 M
 2009-01-14
+1
+99
+69
+1
 2
 245797967
 adventure-works\terri0
@@ -2004,6 +2187,10 @@ Vice President of Engineering
 S
 F
 2008-01-31
+1
+1
+20
+1
 3
 509647174
 adventure-works\roberto0
@@ -2014,6 +2201,10 @@ Engineering Manager
 M
 M
 2007-11-11
+1
+2
+21
+1
 4
 112457891
 adventure-works\rob0
@@ -2024,6 +2215,10 @@ Senior Tool Designer
 S
 M
 2007-12-05
+0
+48
+80
+1
 5
 695256908
 adventure-works\gail0
@@ -2034,6 +2229,10 @@ Design Engineer
 M
 F
 2008-01-06
+1
+5
+22
+1
 6
 998320692
 adventure-works\jossef0
@@ -2044,6 +2243,10 @@ Design Engineer
 M
 M
 2008-01-24
+1
+6
+23
+1
 7
 134969118
 adventure-works\dylan0
@@ -2054,6 +2257,10 @@ Research and Development Manager
 M
 M
 2009-02-08
+1
+61
+50
+1
 8
 811994146
 adventure-works\diane1
@@ -2064,6 +2271,10 @@ Research and Development Engineer
 S
 F
 2008-12-29
+1
+62
+51
+1
 9
 658797903
 adventure-works\gigi0
@@ -2074,6 +2285,10 @@ Research and Development Engineer
 M
 F
 2009-01-16
+1
+63
+51
+1
 10
 879342154
 adventure-works\michael6
@@ -2084,6 +2299,10 @@ Research and Development Manager
 M
 M
 2009-05-03
+1
+16
+64
+1
 11
 974026903
 adventure-works\ovidiu0
@@ -2094,6 +2313,10 @@ Senior Tool Designer
 S
 M
 2010-12-05
+0
+7
+23
+1
 12
 480168528
 adventure-works\thierry0
@@ -2104,6 +2327,10 @@ Tool Designer
 M
 M
 2007-12-11
+0
+9
+24
+1
 13
 486228782
 adventure-works\janice0
@@ -2114,6 +2341,10 @@ Tool Designer
 M
 F
 2010-12-23
+0
+8
+24
+1
 14
 42487730
 adventure-works\michael8
@@ -2124,6 +2355,10 @@ Senior Design Engineer
 S
 M
 2010-12-30
+1
+3
+21
+1
 15
 56920285
 adventure-works\sharon0
@@ -2134,6 +2369,10 @@ Design Engineer
 M
 F
 2011-01-18
+1
+4
+22
+1
 16
 24756624
 adventure-works\david0
@@ -2144,6 +2383,10 @@ Marketing Manager
 S
 M
 2007-12-20
+1
+40
+40
+1
 17
 253022876
 adventure-works\kevin0
@@ -2154,6 +2397,10 @@ Marketing Assistant
 S
 M
 2007-01-26
+0
+42
+41
+1
 18
 222969461
 adventure-works\john5
@@ -2164,6 +2411,10 @@ Marketing Specialist
 S
 M
 2011-02-07
+0
+48
+44
+1
 Showing all 290 rows.
 
 # Auto Optimize
@@ -2243,3 +2494,21 @@ data_test.write.mode("overwrite").format("delta").option("path", "/FileStore/tab
 # Save Table with Append mode
  
 #data_test.write.mode("Append").format("delta").option("path", "/FileStore/tables/Silver").saveAsTable("HumanResources_Employee")
+spark.read.format("delta").load("/FileStore/tables/Silver")
+ 
+display(spark.read.format("delta").load("/FileStore/tables/Silver"))
+ 
+Login
+HireDate
+JobTitle
+BirthDate
+MaritalStatus
+Gender
+1
+rob0
+2007-12-05
+Senior Tool Designer
+1974-12-23
+Single
+Male
+Showing all 1 rows.
